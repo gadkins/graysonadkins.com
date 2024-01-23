@@ -103,8 +103,8 @@ export const Post = defineDocumentType(() => ({
 
 export const Notebook = defineDocumentType(() => ({
   name: "Notebook",
-  filePathPattern: `notebooks/**/*.ipynb`,
-  contentType: "ipynb",
+  filePathPattern: `notebooks/**/*.mdx`,
+  contentType: "mdx",
   fields: {
     title: {
       type: "string",
@@ -121,18 +121,9 @@ export const Notebook = defineDocumentType(() => ({
       type: "boolean",
       default: true,
     },
-    image: {
-      type: "string",
-      required: false,
-    },
-    authors: {
-      // Reference types are not embedded.
-      // Until this is fixed, we can use a simple list.
-      // type: "reference",
-      // of: Author,
-      type: "list",
-      of: { type: "string" },
-      required: true,
+    featured: {
+      type: "boolean",
+      default: false,
     },
   },
   computedFields,

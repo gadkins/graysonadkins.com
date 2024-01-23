@@ -1,0 +1,611 @@
+---
+title: Parameter-Efficient Fine-Turning of Llama 2 with QLoRA - Exported
+description: 4-bit quantization of Llama 2 with Low-Rank Adaptation
+date: 2023-12-20
+---
+
+# Parameter-Efficient Fine-Tuning of Llama 2 with QLoRA - Exported
+
+This notebook demonstrates basic parameter-efficient fine-tuning (PEFT) of Llama 2 using 4-bit quantized LoRA (QLoRA). It leverages the transformers and PEFT libraries from Hugging Face for quantization, LoRA, and fine-tuning.
+
+This notebook is based on [this blog by HF](https://huggingface.co/blog/4bit-transformers-bitsandbytes) and closely follows the outline of [this notebook](https://colab.research.google.com/drive/1uMSS1o_8YOPyG1X_4k6ENEE3kJfBGGhH?usp=sharing#scrollTo=XIyP_0r6zuVc) from Trelis Research.
+
+## Install dependencies
+
+
+```python
+!pip install -q -U git+https://github.com/huggingface/transformers.git
+!pip install -q -U git+https://github.com/huggingface/peft.git
+!pip install -q -U git+https://github.com/huggingface/accelerate.git
+!pip install -q datasets
+```
+
+      Installing build dependencies ... [?25l[?25hdone
+      Getting requirements to build wheel ... [?25l[?25hdone
+      Preparing metadata (pyproject.toml) ... [?25l[?25hdone
+      Installing build dependencies ... [?25l[?25hdone
+      Getting requirements to build wheel ... [?25l[?25hdone
+      Preparing metadata (pyproject.toml) ... [?25l[?25hdone
+      Installing build dependencies ... [?25l[?25hdone
+      Getting requirements to build wheel ... [?25l[?25hdone
+      Preparing metadata (pyproject.toml) ... [?25l[?25hdone
+
+
+
+```python
+# Authenticate to Hugging Face to pull and push models
+!pip install huggingface_hub
+from huggingface_hub import notebook_login
+
+notebook_login()
+```
+
+```mdx
+    Requirement already satisfied: huggingface_hub in /usr/local/lib/python3.10/dist-packages (0.20.1)
+    Requirement already satisfied: filelock in /usr/local/lib/python3.10/dist-packages (from huggingface_hub) (3.13.1)
+    Requirement already satisfied: fsspec>=2023.5.0 in /usr/local/lib/python3.10/dist-packages (from huggingface_hub) (2023.6.0)
+    Requirement already satisfied: requests in /usr/local/lib/python3.10/dist-packages (from huggingface_hub) (2.31.0)
+    Requirement already satisfied: tqdm>=4.42.1 in /usr/local/lib/python3.10/dist-packages (from huggingface_hub) (4.66.1)
+    Requirement already satisfied: pyyaml>=5.1 in /usr/local/lib/python3.10/dist-packages (from huggingface_hub) (6.0.1)
+    Requirement already satisfied: typing-extensions>=3.7.4.3 in /usr/local/lib/python3.10/dist-packages (from huggingface_hub) (4.5.0)
+    Requirement already satisfied: packaging>=20.9 in /usr/local/lib/python3.10/dist-packages (from huggingface_hub) (23.2)
+    Requirement already satisfied: charset-normalizer<4,>=2 in /usr/local/lib/python3.10/dist-packages (from requests->huggingface_hub) (3.3.2)
+    Requirement already satisfied: idna<4,>=2.5 in /usr/local/lib/python3.10/dist-packages (from requests->huggingface_hub) (3.6)
+    Requirement already satisfied: urllib3<3,>=1.21.1 in /usr/local/lib/python3.10/dist-packages (from requests->huggingface_hub) (2.0.7)
+    Requirement already satisfied: certifi>=2017.4.17 in /usr/local/lib/python3.10/dist-packages (from requests->huggingface_hub) (2023.11.17)
+
+
+
+    VBox(children=(HTML(value='<center> <img\nsrc=https://huggingface.co/front/assets/huggingface_logo-noborder.sv…
+```
+
+## Load the model as 4-bit
+
+
+```python
+import torch
+from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
+
+model_id = "meta-llama/Llama-2-7b-chat-hf"
+bnb_config = BitsAndBytesConfig(
+    load_in_4bit=True,
+    bnb_4bit_use_double_quant=True,
+    bnb_4bit_quant_type="nf4",
+    bnb_4bit_compute_dtype=torch.bfloat16
+)
+
+tokenizer = AutoTokenizer.from_pretrained(model_id)
+model = AutoModelForCausalLM.from_pretrained(model_id, quantization_config=bnb_config, device_map={"":0})
+```
+
+```mdx
+    tokenizer_config.json:   0%|          | 0.00/1.62k [00:00<?, ?B/s]
+
+
+
+    tokenizer.model:   0%|          | 0.00/500k [00:00<?, ?B/s]
+
+
+
+    tokenizer.json:   0%|          | 0.00/1.84M [00:00<?, ?B/s]
+
+
+
+    special_tokens_map.json:   0%|          | 0.00/414 [00:00<?, ?B/s]
+
+
+
+    config.json:   0%|          | 0.00/614 [00:00<?, ?B/s]
+
+
+
+    model.safetensors.index.json:   0%|          | 0.00/26.8k [00:00<?, ?B/s]
+
+
+
+    Downloading shards:   0%|          | 0/2 [00:00<?, ?it/s]
+
+
+
+    model-00001-of-00002.safetensors:   0%|          | 0.00/9.98G [00:00<?, ?B/s]
+
+
+
+    model-00002-of-00002.safetensors:   0%|          | 0.00/3.50G [00:00<?, ?B/s]
+
+
+
+    Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]
+
+
+
+    generation_config.json:   0%|          | 0.00/188 [00:00<?, ?B/s]
+```
+
+## Training setup
+
+Preprocess to the model to prepare it for training.
+
+
+```python
+from peft import prepare_model_for_kbit_training
+
+model.gradient_checkpointing_enable()
+model = prepare_model_for_kbit_training(model)
+```
+
+
+```python
+def print_trainable_parameters(model):
+    """
+    Prints the number of trainable parameters in the model.
+    """
+    trainable_params = 0
+    all_param = 0
+    for _, param in model.named_parameters():
+        all_param += param.numel()
+        if param.requires_grad:
+            trainable_params += param.numel()
+    print(
+        f"trainable params: {trainable_params} || all params: {all_param} || trainable%: {100 * trainable_params / all_param}"
+    )
+```
+
+
+```python
+from peft import LoraConfig, get_peft_model
+
+config = LoraConfig(
+    r=8,
+    lora_alpha=32,
+    # target_modules=["query_key_value"],
+    target_modules=["self_attn.q_proj", "self_attn.k_proj", "self_attn.v_proj", "self_attn.o_proj"], # Specific to Llama models
+    lora_dropout=0.05,
+    bias="none",
+    task_type="CAUSAL_LM"
+)
+
+model = get_peft_model(model, config)
+print_trainable_parameters(model)
+```
+
+    trainable params: 8388608 || all params: 3508801536 || trainable%: 0.23907331075678143
+
+
+# Data setup
+
+Load a common dataset, english quotes, to fine tune our model on famous quotes.
+
+
+```python
+from datasets import load_dataset
+
+data = load_dataset("Abirate/english_quotes")
+data = data.map(lambda samples: tokenizer(samples["quote"]), batched=True)
+```
+
+```mdx
+    Downloading readme:   0%|          | 0.00/5.55k [00:00<?, ?B/s]
+
+
+
+    Downloading data:   0%|          | 0.00/647k [00:00<?, ?B/s]
+
+
+
+    Generating train split: 0 examples [00:00, ? examples/s]
+
+
+
+    Map:   0%|          | 0/2508 [00:00<?, ? examples/s]
+```
+
+# Training
+
+Run the cell below to run the training! For the sake of the demo, we just ran it for few steps just to showcase how to use this integration with existing tools on the HF ecosystem.
+
+
+```python
+import transformers
+
+# Pad token is required for Llama tokenizer
+tokenizer.pad_token = tokenizer.eos_token # </s>
+
+trainer = transformers.Trainer(
+    model=model,
+    train_dataset=data["train"],
+    args=transformers.TrainingArguments(
+        per_device_train_batch_size=1,
+        gradient_accumulation_steps=4,
+        warmup_steps=2,
+        max_steps=10,
+        learning_rate=2e-4,
+        fp16=True,
+        logging_steps=1,
+        output_dir="outputs",
+        optim="paged_adamw_8bit"
+    ),
+    data_collator=transformers.DataCollatorForLanguageModeling(tokenizer, mlm=False),
+)
+model.config.use_cache = False  # Silence warnings (Set to True for inference)
+trainer.train()
+```
+
+```mdx
+    You're using a LlamaTokenizerFast tokenizer. Please note that with a fast tokenizer, using the `__call__` method is faster than using a method to encode the text followed by a call to the `pad` method to get a padded encoding.
+    /usr/local/lib/python3.10/dist-packages/torch/utils/checkpoint.py:429: UserWarning: torch.utils.checkpoint: please pass in use_reentrant=True or use_reentrant=False explicitly. The default value of use_reentrant will be updated to be False in the future. To maintain current behavior, pass use_reentrant=True. It is recommended that you use use_reentrant=False. Refer to docs for more details on the differences between the two variants.
+      warnings.warn(
+
+
+
+
+    <div>
+
+      <progress value='10' max='10' style='width:300px; height:20px; vertical-align: middle;'></progress>
+      [10/10 00:47, Epoch 0/1]
+    </div>
+    <table border="1" class="dataframe">
+  <thead>
+ <tr style="text-align: left;">
+      <th>Step</th>
+      <th>Training Loss</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>2.671600</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>2.091100</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>2.129000</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>1.858300</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>2.408100</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>1.918200</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>1.911800</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>1.374500</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>2.457100</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>2.289100</td>
+    </tr>
+  </tbody>
+</table><p>
+
+
+
+
+
+    TrainOutput(global_step=10, training_loss=2.110874855518341, metrics={'train_runtime': 56.0554, 'train_samples_per_second': 0.714, 'train_steps_per_second': 0.178, 'total_flos': 30825159745536.0, 'train_loss': 2.110874855518341, 'epoch': 0.02})
+
+```
+
+# Inference
+
+
+```python
+from transformers import TextStreamer
+model.config.use_cache = True
+model.eval()
+```
+
+
+
+```mdx
+    PeftModelForCausalLM(
+      (base_model): LoraModel(
+        (model): LlamaForCausalLM(
+          (model): LlamaModel(
+            (embed_tokens): Embedding(32000, 4096, padding_idx=0)
+            (layers): ModuleList(
+              (0-31): 32 x LlamaDecoderLayer(
+                (self_attn): LlamaAttention(
+                  (q_proj): lora.Linear4bit(
+                    (base_layer): Linear4bit(in_features=4096, out_features=4096, bias=False)
+                    (lora_dropout): ModuleDict(
+                      (default): Dropout(p=0.05, inplace=False)
+                    )
+                    (lora_A): ModuleDict(
+                      (default): Linear(in_features=4096, out_features=8, bias=False)
+                    )
+                    (lora_B): ModuleDict(
+                      (default): Linear(in_features=8, out_features=4096, bias=False)
+                    )
+                    (lora_embedding_A): ParameterDict()
+                    (lora_embedding_B): ParameterDict()
+                  )
+                  (k_proj): lora.Linear4bit(
+                    (base_layer): Linear4bit(in_features=4096, out_features=4096, bias=False)
+                    (lora_dropout): ModuleDict(
+                      (default): Dropout(p=0.05, inplace=False)
+                    )
+                    (lora_A): ModuleDict(
+                      (default): Linear(in_features=4096, out_features=8, bias=False)
+                    )
+                    (lora_B): ModuleDict(
+                      (default): Linear(in_features=8, out_features=4096, bias=False)
+                    )
+                    (lora_embedding_A): ParameterDict()
+                    (lora_embedding_B): ParameterDict()
+                  )
+                  (v_proj): lora.Linear4bit(
+                    (base_layer): Linear4bit(in_features=4096, out_features=4096, bias=False)
+                    (lora_dropout): ModuleDict(
+                      (default): Dropout(p=0.05, inplace=False)
+                    )
+                    (lora_A): ModuleDict(
+                      (default): Linear(in_features=4096, out_features=8, bias=False)
+                    )
+                    (lora_B): ModuleDict(
+                      (default): Linear(in_features=8, out_features=4096, bias=False)
+                    )
+                    (lora_embedding_A): ParameterDict()
+                    (lora_embedding_B): ParameterDict()
+                  )
+                  (o_proj): lora.Linear4bit(
+                    (base_layer): Linear4bit(in_features=4096, out_features=4096, bias=False)
+                    (lora_dropout): ModuleDict(
+                      (default): Dropout(p=0.05, inplace=False)
+                    )
+                    (lora_A): ModuleDict(
+                      (default): Linear(in_features=4096, out_features=8, bias=False)
+                    )
+                    (lora_B): ModuleDict(
+                      (default): Linear(in_features=8, out_features=4096, bias=False)
+                    )
+                    (lora_embedding_A): ParameterDict()
+                    (lora_embedding_B): ParameterDict()
+                  )
+                  (rotary_emb): LlamaRotaryEmbedding()
+                )
+                (mlp): LlamaMLP(
+                  (gate_proj): Linear4bit(in_features=4096, out_features=11008, bias=False)
+                  (up_proj): Linear4bit(in_features=4096, out_features=11008, bias=False)
+                  (down_proj): Linear4bit(in_features=11008, out_features=4096, bias=False)
+                  (act_fn): SiLUActivation()
+                )
+                (input_layernorm): LlamaRMSNorm()
+                (post_attention_layernorm): LlamaRMSNorm()
+              )
+            )
+            (norm): LlamaRMSNorm()
+          )
+          (lm_head): Linear(in_features=4096, out_features=32000, bias=False)
+        )
+      )
+    )
+```
+
+
+
+```python
+# Define a stream *without* function calling capabilities
+def stream(user_prompt):
+    runtimeFlag = "cuda:0"
+    system_prompt = 'You are a helpful assistant that provides accurate and concise responses'
+
+    B_INST, E_INST = "[INST]", "[/INST]"
+    B_SYS, E_SYS = "<<SYS>>\n", "\n<</SYS>>\n\n"
+
+    prompt = f"{B_INST} {B_SYS}{system_prompt.strip()}{E_SYS}{user_prompt.strip()} {E_INST}\n\n"
+
+    inputs = tokenizer([prompt], return_tensors="pt").to(runtimeFlag)
+
+    streamer = TextStreamer(tokenizer)
+
+    # Despite returning the usual output, the streamer will also print the generated text to stdout.
+    _ = model.generate(**inputs, streamer=streamer, max_new_tokens=500)
+```
+
+
+```python
+stream('Provide a very brief comparison of salsa and bachata.')
+```
+
+```mdx
+    <s> [INST] <<SYS>>
+    You are a helpful assistant that provides accurate and concise responses
+    <</SYS>>
+    
+    Provide a very brief comparison of salsa and bachata. [/INST]
+    
+    Sure! Here's a brief comparison between salsa and bachata:
+    
+    Salsa:
+    
+    * Originated in Cuba and is characterized by fast-paced rhythms and complex footwork
+    * Typically features a strong emphasis on percussion and horns
+    * Is often associated with energetic and lively social gatherings
+    
+    Bachata:
+    
+    * Originated in the Dominican Republic and is characterized by a slower, more sensual rhythm
+    * Typically features a focus on romantic lyrics and a softer, more melodic sound
+    * Is often associated with more intimate and romantic social gatherings.
+    
+    I hope this helps! Let me know if you have any other questions.</s>
+```
+
+# Push Model to Hub
+
+
+```python
+# Workaround for intermittent error described here: https://github.com/googlecolab/colabtools/issues/3409
+import locale
+locale.getpreferredencoding = lambda: "UTF-8"
+```
+
+
+```python
+# Extract the last portion of the base_model
+base_model_name = model_id.split("/")[-1]
+
+# Define HF paths
+adapter_model = f"gadkins/{base_model_name}-fine-tuned-adapters"
+new_model = f"gadkins/{base_model_name}-fine-tuned"
+
+print(f"Adapter Model: {adapter_model}\nNew Model: {new_model}")
+```
+
+```mdx
+    Adapter Model: gadkins/Llama-2-7b-chat-hf-fine-tuned-adapters
+    New Model: gadkins/Llama-2-7b-chat-hf-fine-tuned
+```
+
+
+```python
+# Set up the new repo and branch
+
+from huggingface_hub import HfApi, create_branch, create_repo
+
+# Initialize the HfApi class
+api = HfApi()
+
+create_repo(new_model, private=False)
+
+create_branch(new_model, repo_type="model", branch="fine-tune-qlora-basic")
+```
+
+
+```python
+# Save the model
+model.save_pretrained(adapter_model, push_to_hub=True, use_auth_token=True)
+
+# Push the model to HF Hub
+model.push_to_hub(adapter_model, use_auth_token=True)
+```
+
+```mdx
+    adapter_model.bin:   0%|          | 0.00/33.6M [00:00<?, ?B/s]
+
+
+
+
+
+    CommitInfo(commit_url='https://huggingface.co/gadkins/Llama-2-7b-chat-hf-fine-tuned-adapters/commit/b8e10c2841960d021769275446b4d061f1bf0245', commit_message='Upload model', commit_description='', oid='b8e10c2841960d021769275446b4d061f1bf0245', pr_url=None, pr_revision=None, pr_num=None)
+```
+
+
+
+```python
+import os
+cache_dir = "/content/drive/My Drive/huggingface_cache"
+os.makedirs(cache_dir, exist_ok=True) # Ensure the directory exists
+```
+
+
+```python
+# Reload the base model (If using Llama 13B model, you'll likely need Colab Pro for high RAM environment this loads the full original model)
+model = AutoModelForCausalLM.from_pretrained(model_id, device_map='cpu', trust_remote_code=True, torch_dtype=torch.float16, cache_dir=cache_dir)
+```
+
+```mdx
+    config.json:   0%|          | 0.00/614 [00:00<?, ?B/s]
+
+
+
+    model.safetensors.index.json:   0%|          | 0.00/26.8k [00:00<?, ?B/s]
+
+
+
+    Downloading shards:   0%|          | 0/2 [00:00<?, ?it/s]
+
+
+
+    model-00001-of-00002.safetensors:   0%|          | 0.00/9.98G [00:00<?, ?B/s]
+
+
+
+    model-00002-of-00002.safetensors:   0%|          | 0.00/3.50G [00:00<?, ?B/s]
+
+
+
+    Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]
+
+
+
+    generation_config.json:   0%|          | 0.00/188 [00:00<?, ?B/s]
+```
+
+
+```python
+from peft import PeftModel
+
+# Load perf model with new adapters
+model = PeftModel.from_pretrained(
+    model,
+    adapter_model,
+)
+```
+
+
+```python
+model = model.merge_and_unload() # merge adapters with the base model
+```
+
+
+```python
+model.push_to_hub(new_model, use_auth_token=True, max_shard_size="5GB")
+```
+
+```mdx
+    pytorch_model-00002-of-00003.bin:   0%|          | 0.00/4.95G [00:00<?, ?B/s]
+
+
+
+    Upload 3 LFS files:   0%|          | 0/3 [00:00<?, ?it/s]
+
+
+
+    pytorch_model-00001-of-00003.bin:   0%|          | 0.00/4.94G [00:00<?, ?B/s]
+
+
+
+    pytorch_model-00003-of-00003.bin:   0%|          | 0.00/3.59G [00:00<?, ?B/s]
+
+
+
+
+
+    CommitInfo(commit_url='https://huggingface.co/gadkins/Llama-2-7b-chat-hf-fine-tuned/commit/dc90c9562503d17b31844440e9609b52e35e5b4b', commit_message='Upload LlamaForCausalLM', commit_description='', oid='dc90c9562503d17b31844440e9609b52e35e5b4b', pr_url=None, pr_revision=None, pr_num=None)
+```
+
+
+
+```python
+# Push the tokenizer
+from transformers import AutoTokenizer
+
+tokenizer = AutoTokenizer.from_pretrained(model_id, trust_remote_code=True)
+tokenizer.push_to_hub(new_model, use_auth_token=True)
+```
+
+
+
+```mdx
+    CommitInfo(commit_url='https://huggingface.co/gadkins/Llama-2-7b-chat-hf-fine-tuned/commit/583b8fa699e52fc6eef0606b65b3b97441e9c38e', commit_message='Upload tokenizer', commit_description='', oid='583b8fa699e52fc6eef0606b65b3b97441e9c38e', pr_url=None, pr_revision=None, pr_num=None)
+```
+

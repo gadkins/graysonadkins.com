@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import Link from "next/link"
-import { useSelectedLayoutSegment } from "next/navigation"
+// import { useSelectedLayoutSegment } from "next/navigation"
 
 import { MainNavItem } from "types"
 import { siteConfig } from "@/config/site"
@@ -30,40 +30,37 @@ interface MainNavProps {
 const components: { title: string; href: string; description: string }[] = [
   {
     title: "Fine-tuning",
-    href: "/notebooks",
+    href: "/notebooks/fine-tuning",
     description:
       "Chat and instruction fine-tuning",
   },
   {
     title: "Mixture of Experts",
-    href: "/docs/use-cases/testing",
+    href: "/notebooks/mixture-of-experts",
     description:
       "Detailed walkthrough",
   },
   {
     title: "Prompt Engineering",
-    href: "/docs/use-cases/pull-requests",
+    href: "/notebooks/prompt-engineering",
     description:
       "Preview PRs before merging",
   },
   {
-    title: "Research",
-    href: "/docs/use-cases/staging",
+    title: "Safety & Alignment",
+    href: "/notebooks/alignment",
     description: "Isolated, on-demand staging environments",
   },
 ]
 
 export function MainNav({ items, children }: MainNavProps) {
-  const segment = useSelectedLayoutSegment()
+  // const segment = useSelectedLayoutSegment()
   const [showMobileMenu, setShowMobileMenu] = React.useState<boolean>(false)
 
   return (
     <div className="flex gap-6 md:gap-10">
       <Link href="/" className="hidden items-center space-x-2 md:flex">
         <Icons.grayson />
-        <span className="hidden font-bold sm:inline-block">
-          {siteConfig.name}
-        </span>
       </Link>
       <NavigationMenu>
         <NavigationMenuList>
@@ -100,7 +97,7 @@ export function MainNav({ items, children }: MainNavProps) {
             </NavigationMenuContent>
           </NavigationMenuItem>
           <NavigationMenuItem>
-            <NavigationMenuTrigger>Notebooks</NavigationMenuTrigger>
+            <NavigationMenuTrigger><Link href="/notebooks" >Notebooks</Link></NavigationMenuTrigger>
             <NavigationMenuContent>
               <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
                 {components.map((component) => (

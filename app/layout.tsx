@@ -31,11 +31,12 @@ export const metadata = {
   },
   description: siteConfig.description,
   keywords: [
-    "Next.js",
-    "React",
-    "Tailwind CSS",
-    "Server Components",
-    "Radix UI",
+    "Artificial Intelligence",
+    "Machine Learning",
+    "Large Language Models",
+    "NLP",
+    "Computer Vision",
+    "Chatbots",
   ],
   authors: [
     {
