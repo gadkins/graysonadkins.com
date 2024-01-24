@@ -29,27 +29,27 @@ interface MainNavProps {
 
 const components: { title: string; href: string; description: string }[] = [
   {
-    title: "Fine-tuning",
+    title: "Fine-tuning & Alignment",
     href: "/notebooks/fine-tuning",
     description:
-      "Chat and instruction fine-tuning",
+      "Aligning base models",
   },
   {
-    title: "Mixture of Experts",
+    title: "Data Augmentation",
+    href: "/notebooks/prompt-engineering",
+    description:
+      "Synthetic & weakly labeled data",
+  },
+  {
+    title: "Multimodal & Mixture Models",
     href: "/notebooks/mixture-of-experts",
     description:
-      "Detailed walkthrough",
+      "Images, audio, code, and beyond",
   },
   {
     title: "Prompt Engineering",
-    href: "/notebooks/prompt-engineering",
-    description:
-      "Preview PRs before merging",
-  },
-  {
-    title: "Safety & Alignment",
     href: "/notebooks/alignment",
-    description: "Isolated, on-demand staging environments",
+    description: "Templates and best practices",
   },
 ]
 
@@ -58,7 +58,7 @@ export function MainNav({ items, children }: MainNavProps) {
   const [showMobileMenu, setShowMobileMenu] = React.useState<boolean>(false)
 
   return (
-    <div className="flex gap-6 md:gap-10">
+    <div className="flex gap-6 md:gap-6">
       <Link href="/" className="hidden items-center space-x-2 md:flex">
         <Icons.grayson />
       </Link>

@@ -3,11 +3,15 @@ import localFont from "next/font/local"
 
 import "@/styles/globals.css"
 import { siteConfig } from "@/config/site"
+import { Icons } from "@/components/icons"
+import Link from "next/link"
 import { absoluteUrl, cn } from "@/lib/utils"
 import { Toaster } from "@/components/ui/toaster"
 import { Analytics } from "@/components/analytics"
 import { TailwindIndicator } from "@/components/tailwind-indicator"
 import { ThemeProvider } from "@/components/theme-provider"
+
+import Head from "next/head"
 
 const fontSans = FontSans({
     subsets: ["latin"],
@@ -31,11 +35,12 @@ export const metadata = {
     },
     description: siteConfig.description,
     keywords: [
-        "Next.js",
-        "React",
-        "Tailwind CSS",
-        "Server Components",
-        "Radix UI",
+        "Artificial Intelligence",
+        "Machine Learning",
+        "Large Language Models",
+        "NLP",
+        "Computer Vision",
+        "Chatbots",
     ],
     authors: [
         {
@@ -73,22 +78,18 @@ export const metadata = {
 
 export default function RootLayout({ children }: RootLayoutProps) {
     return (
-        <html lang="en" suppressHydrationWarning>
-            <head />
-            <body
-                className={cn(
-                    "min-h-screen bg-background font-sans antialiased",
-                    fontSans.variable,
-                    fontHeading.variable
-                )}
-            >
+        <>
+            <Head >
+                <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+            </Head>
+            <div className={`min-h-screen bg-background font-sans antialiased ${fontSans.variable} ${fontHeading.variable}`}>
                 <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
                     {children}
                     <Analytics />
                     <Toaster />
                     <TailwindIndicator />
                 </ThemeProvider>
-            </body>
-        </html>
+            </div>
+        </>
     )
 }

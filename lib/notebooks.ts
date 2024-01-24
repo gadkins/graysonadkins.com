@@ -1,6 +1,5 @@
 import fs from "fs";
 import { join } from "path";
-import matter from "gray-matter";
 
 const notebooksDirectory = join(process.cwd(), "_notebooks");
 
