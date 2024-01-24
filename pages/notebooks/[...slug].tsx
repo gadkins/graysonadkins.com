@@ -14,6 +14,8 @@ import { siteConfig } from "@/config/site"
 
 import { marketingConfig } from "@/config/marketing"
 import { MainNav } from "@/components/main-nav"
+import { DocsSidebarNav } from "@/components/sidebar-nav"
+import { notebooksConfig } from "@/config/notebooks"
 import { SiteFooter } from "@/components/site-footer"
 
 import { getNotebookBySlug, getAllNotebooks } from "@/lib/notebooks"
@@ -85,11 +87,15 @@ export default function NotebooksPage({
                     </nav>
                 </div>
             </header>
-            <div className="w-full gap-6 py-8 md:py-0 lg:py-0">
-                {/* <NotebookViewer url="/notebooks/ft_retrieval_augmented_generation_qdrant.html" /> */}
-                <NotebookViewer url={`/notebooks/${slug}.html`} />
+            <div className="container flex-1 md:grid md:grid-cols-[220px_1fr] md:gap-6 lg:gap-0">
+                <aside className="fixed top-14 z-30 hidden h-[calc(100vh-3.5rem)] w-full shrink-0 overflow-y-auto border-r py-6 pr-2 md:sticky md:block lg:py-10">
+                    <DocsSidebarNav items={notebooksConfig.sidebarNav} />
+                </aside>
+                {children}
+                {/* <div className="w-full gap-6 py-8 md:py-0 lg:py-0"> */}
+                <NotebookViewer url={`/html/notebooks/${slug}.html`} />
+                {/* </div> */}
             </div>
-            <SiteFooter className="border-t" />
         </div>
     )
 }

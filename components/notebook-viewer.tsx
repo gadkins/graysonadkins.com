@@ -7,10 +7,10 @@ const NotebookViewer = ({ url }) => {
         // .. resize iFrame container divBoxRef as needed.
     };
     return (
-        <div ref={divBoxRef} className=" relative text-gray-600" style={{ height: '100vh' }}>
-            {/* {!iFrameLoaded && (
+        <div ref={divBoxRef} className="relative text-gray-600" style={{ height: '100vh' }}>
+            {!iFrameLoaded && (
                 <span className="inline-block">loading notebook ...</span>
-            )} */}
+            )}
             <iframe
                 onLoad={(e) => {
                     setIFrameLoaded(true);

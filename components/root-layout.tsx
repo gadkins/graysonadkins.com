@@ -3,6 +3,11 @@ import localFont from "next/font/local"
 
 import "@/styles/globals.css"
 import { siteConfig } from "@/config/site"
+import { marketingConfig } from "@/config/marketing"
+import { docsConfig } from "@/config/docs"
+import { MainNav } from "@/components/main-nav"
+import { notebooksConfig } from "@/config/notebooks"
+import { DocsSidebarNav } from "@/components/sidebar-nav"
 import { Icons } from "@/components/icons"
 import Link from "next/link"
 import { absoluteUrl, cn } from "@/lib/utils"
@@ -93,3 +98,28 @@ export default function RootLayout({ children }: RootLayoutProps) {
         </>
     )
 }
+
+
+            // export default function RootLayout({ children }: RootLayoutProps) {
+            //     return (
+            //         <>
+            //             <Head >
+            //                 <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+            //             </Head>
+            //             <div className={`min-h-screen bg-background font-sans antialiased ${fontSans.variable} ${fontHeading.variable}`}>
+            //                 <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            //                     {/* <div className="flex-1 md:grid md:grid-cols-[220px_1fr] md:gap-6 lg:grid-cols-[240px_1fr] lg:gap-0">
+            //                         <aside className="fixed top-16 z-30 hidden h-[calc(100vh-3.5rem)] w-full shrink-0 overflow-y-auto border-r py-6 pr-2 md:sticky md:block lg:py-10">
+            //                             <DocsSidebarNav items={notebooksConfig.sidebarNav} />
+            //                         </aside>
+            //                         {children}
+            //                     </div> */}
+            //                     {/* {children} */}
+            //                     <Analytics />
+            //                     <Toaster />
+            //                     <TailwindIndicator />
+            //                 </ThemeProvider>
+            //             </div>
+            //         </>
+            //     )
+            // }
