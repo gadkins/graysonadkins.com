@@ -1,14 +1,15 @@
 import fs from "fs";
 import { join } from "path";
 
-const notebooksDirectory = join(process.cwd(), "_notebooks");
+const notebooksDirectory = join(process.cwd(), "/public/html/notebooks");
 
 export function getNotebookSlugs() {
     return fs.readdirSync(notebooksDirectory);
 }
 
 export function getNotebookBySlug(slug: string, fields: string[] = []) {
-    const realSlug = slug.replace(/\.html$/, "");
+    let realSlug = Array.isArray(slug) ? slug.join('/') : slug;
+    realSlug = realSlug.replace(/\.html$/, "");
     const fullPath = join(notebooksDirectory, `${realSlug}.html`);
     const fileContents = fs.readFileSync(fullPath, "utf8");
 
@@ -25,9 +26,6 @@ export function getNotebookBySlug(slug: string, fields: string[] = []) {
         }
         if (field === "content") {
             items[field] = fileContents;
-        }
-        if (field === "fullPath") {
-            items[field] = fullPath;
         }
     });
 

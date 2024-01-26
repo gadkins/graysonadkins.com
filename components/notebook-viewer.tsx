@@ -8,9 +8,9 @@ const NotebookViewer = ({ url }) => {
     };
     return (
         <div ref={divBoxRef} className="relative text-gray-600" style={{ height: '100vh' }}>
-            {!iFrameLoaded && (
+            {/* {!iFrameLoaded && (
                 <span className="inline-block">loading notebook ...</span>
-            )}
+            )} */}
             <iframe
                 onLoad={(e) => {
                     setIFrameLoaded(true);

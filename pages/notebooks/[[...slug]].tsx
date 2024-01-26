@@ -36,6 +36,10 @@ export default function NotebooksPage({
 }: NotebooksLayoutProps) {
     const router = useRouter()
     const slug = router.query.slug;
+    const path = Array.isArray(slug) ? slug.join('/') : slug;
+    // if (!router.isFallback && !notebook?.slug) {
+    //     return <ErrorPage statusCode={404} />;
+    // }
     return (
         <div className="flex min-h-screen flex-col">
             <header className="sticky top-0 z-40 border-b bg-background">
@@ -87,18 +91,57 @@ export default function NotebooksPage({
                     </nav>
                 </div>
             </header>
-            <div className="container flex-1 md:grid md:grid-cols-[220px_1fr] md:gap-6 lg:gap-0">
-                <aside className="fixed top-14 z-30 hidden h-[calc(100vh-3.5rem)] w-full shrink-0 overflow-y-auto border-r py-6 pr-2 md:sticky md:block lg:py-10">
-                    <DocsSidebarNav items={notebooksConfig.sidebarNav} />
-                </aside>
-                {children}
-                {/* <div className="w-full gap-6 py-8 md:py-0 lg:py-0"> */}
-                <NotebookViewer url={`/html/notebooks/${slug}.html`} />
-                {/* </div> */}
-            </div>
+            {router.isFallback ? (
+                <p>Loading…</p>
+            ) : (
+                <div className="container flex-1 md:grid md:grid-cols-[220px_1fr] md:gap-6 lg:gap-0">
+                    <aside className="fixed top-14 z-30 hidden h-[calc(100vh-3.5rem)] w-full shrink-0 overflow-y-auto border-r py-6 pr-2 md:sticky md:block lg:py-10">
+                        <DocsSidebarNav items={notebooksConfig.sidebarNav} />
+                    </aside>
+                    {children}
+                    {/* <div className="w-full gap-6 py-8 md:py-0 lg:py-0"> */}
+                    <NotebookViewer url={`/html/notebooks/${path}.html`} />
+                    {/* </div> */}
+                </div>
+            )}
         </div>
     )
 }
+
+// type Params = {
+//     params: {
+//         slug: string;
+//     };
+// };
+
+// export async function getStaticProps({ params }: Params) {
+//     const notebook = getNotebookBySlug(params.slug, [
+//         "slug",
+//         "content",
+//     ]);
+
+//     return {
+//         props: {
+//             notebook: {
+//                 ...notebook,
+//             },
+//         },
+//     };
+// }
+
+// export async function getStaticPaths() {
+//     const notebooks = getAllNotebooks(["slug"]);
+//     return {
+//         paths: notebooks.map((notebook) => {
+//             return {
+//                 params: {
+//                     slug: [notebook.slug],
+//                 },
+//             };
+//         }),
+//         fallback: false,
+//     };
+// }
 
 // type Params = {
 //     params: {

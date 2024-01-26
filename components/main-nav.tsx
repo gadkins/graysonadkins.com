@@ -29,27 +29,37 @@ interface MainNavProps {
 
 const components: { title: string; href: string; description: string }[] = [
   {
-    title: "Fine-tuning & Alignment",
-    href: "/notebooks/fine-tuning",
+    title: "Fine-tuning",
+    href: "/notebooks/fine-tuning/qlora-basic",
     description:
-      "Aligning base models",
+      "Domain-specific training",
   },
   {
-    title: "Data Augmentation",
-    href: "/notebooks/prompt-engineering",
-    description:
-      "Synthetic & weakly labeled data",
-  },
-  {
-    title: "Multimodal & Mixture Models",
+    title: "Multimodality",
     href: "/notebooks/mixture-of-experts",
     description:
       "Images, audio, code, and beyond",
   },
   {
-    title: "Prompt Engineering",
-    href: "/notebooks/alignment",
-    description: "Templates and best practices",
+    title: "Embedding & RAG",
+    href: "/notebooks/rag",
+    description: "Basic and advanced RAG",
+  },
+  {
+    title: "Data Pipelines",
+    href: "/notebooks/data-pipelines/deduplication",
+    description:
+      "Cleaning and synthesizing data",
+  },
+  {
+    title: "Quantization",
+    href: "/notebooks/quantization/awq",
+    description: "Optimizing for memory efficiency",
+  },
+  {
+    title: "MLOps",
+    href: "/notebooks/mlops/inference",
+    description: "Model serving and inference",
   },
 ]
 

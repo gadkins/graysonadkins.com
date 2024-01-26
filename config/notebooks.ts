@@ -25,8 +25,12 @@ export const notebooksConfig: NotebooksConfig = {
       title: "Fine-Tuning",
       items: [
         {
-          title: "QLoRA 4-bit",
-          href: "/notebooks/fine-tuning/qolora-4-bit",
+          title: "Basic QLoRA",
+          href: "/notebooks/fine-tuning/qlora-basic",
+        },
+        {
+          title: "Advanced QLoRA",
+          href: "/notebooks/fine-tuning/qlora-advanced",
         },
         {
           title: "Supervised",
