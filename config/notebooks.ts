@@ -13,10 +13,10 @@ export const notebooksConfig: NotebooksConfig = {
   ],
   sidebarNav: [
     {
-      title: "Getting Started",
+      title: "Introduction",
       items: [
         {
-          title: "Introduction",
+          title: "Overview",
           href: "/notebooks",
         },
       ],
@@ -65,8 +65,12 @@ export const notebooksConfig: NotebooksConfig = {
       ],
     },
     {
-      title: "Multimodal & Mixture Models",
+      title: "Vision & Multimodal",
       items: [
+        {
+          title: "Vision Transformer",
+          href: "/notebooks/vision/vit",
+        },
         {
           title: "Mixtral 8x7b",
           href: "/notebooks/mixture-models/mixtral-8x7b",

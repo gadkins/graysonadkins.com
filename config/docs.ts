@@ -22,10 +22,10 @@ export const docsConfig: DocsConfig = {
       ],
     },
     {
-      title: "Documentation",
+      title: "Core Concepts",
       items: [
         {
-          title: "Introduction",
+          title: "Tokenization",
           href: "/docs/documentation",
         },
         {

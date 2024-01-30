@@ -3,7 +3,7 @@
 <head><meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>qlora-basic</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>qlora</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 
 
 
@@ -14580,7 +14580,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h1 id="(Basic)-Parameter-Efficient-Fine-Tuning-of-Llama-2-with-QLoRA"><strong>(Basic) Parameter-Efficient Fine-Tuning of Llama 2 with QLoRA</strong><a class="anchor-link" href="#(Basic)-Parameter-Efficient-Fine-Tuning-of-Llama-2-with-QLoRA">&#182;</a></h1><p>This notebook demonstrates basic parameter-efficient fine-tuning (PEFT) of Llama 2 using 4-bit quantized LoRA (QLoRA). It leverages the <code>transformers</code> and <code>PEFT</code> libraries from Hugging Face for quantization, LoRA, and fine-tuning.</p>
+<h1 id="(Basic)-Parameter-Efficient-Fine-Tuning-of-Llama-2-with-QLoRA"><strong>(Basic) Parameter-Efficient Fine-Tuning of Llama 2 with QLoRA</strong><a class="anchor-link" href="#(Basic)-Parameter-Efficient-Fine-Tuning-of-Llama-2-with-QLoRA">&#182;</a></h1><p>This notebook demonstrates basic parameter-efficient fine-tuning (PEFT) of Llama 2 using 4-bit quantized <a href="https://arxiv.org/abs/2106.09685">LoRA</a> (QLoRA). It leverages the <code>transformers</code> and <code>PEFT</code> libraries from Hugging Face for quantization, LoRA, and fine-tuning.</p>
 <p>This notebook is based on <a href="https://huggingface.co/blog/4bit-transformers-bitsandbytes">this blog by Hugging Face</a> and closely follows the outline of <a href="https://colab.research.google.com/drive/1uMSS1o_8YOPyG1X_4k6ENEE3kJfBGGhH?usp=sharing#scrollTo=XIyP_0r6zuVc">this notebook</a> from Trelis Research.</p>
 <p>Read the QLoRA paper:</p>
 <blockquote><p><a href="https://arxiv.org/abs/2305.14314">Dettmers, Tim, et al. "Qlora: Efficient finetuning of quantized llms." arXiv preprint arXiv:2305.14314 (2023).</a></p>
@@ -14624,6 +14624,72 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h2 id="Table-of-Contents">Table of Contents<a class="anchor-link" href="#Table-of-Contents">&#182;</a></h2>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<ul>
+<li>Quantization  </li>
+<li>QLoRA  </li>
+<li>Install dependencies</li>
+<li>Load the model in 4-bit precision</li>
+<li>Training setup</li>
+<li>Data setup</li>
+<li>Training</li>
+<li>Inference</li>
+<li>Push the model to Hugging Face Hub (optional)</li>
+</ul>
+
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h2 id="Quantization">Quantization<a class="anchor-link" href="#Quantization">&#182;</a></h2>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>Quantization is a technique used to reduce the memory and computational requirements of an LLM without significantly sacrificing its performance. It involves representing the model's weights, which are typically stored as high-precision floating-point numbers (e.g., 32-bit), with lower-precision data types (e.g., 16-bit, 8-bit, or 4-bit).</p>
+<p>Quantization Pros:</p>
+<ul>
+<li>Reduced memory footprint    </li>
+<li>Faster inference  </li>
+<li>Improved energy efficiency  </li>
+</ul>
+<p>Quantization Cons:</p>
+<ul>
+<li>Loss of precision (i.e. accuracy) caused by quantization noise—i.e. reducing dimensionality can result in the model losing nuance  </li>
+</ul>
+
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h2 id="QLoRA">QLoRA<a class="anchor-link" href="#QLoRA">&#182;</a></h2>
 </div>
 </div>
@@ -14645,37 +14711,6 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <li>Paged optimizers - Optimizer parameters are offloaded to the CPU when necessary.</li>
 </ol>
 <p><strong>Related Concepts</strong>: parameter-efficient fine-tuning (PEFT), low-rank adaptation (LoRA), quantization-aware training, mixed-precision training, double quantization</p>
-
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="Table-of-Contents">Table of Contents<a class="anchor-link" href="#Table-of-Contents">&#182;</a></h2>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<ul>
-<li>Install dependencies</li>
-<li>Load the model in 4-bit precision</li>
-<li>Training setup</li>
-<li>Data setup</li>
-<li>Training</li>
-<li>Inference</li>
-<li>Push the model to Hugging Face Hub (optional)</li>
-</ul>
 
 </div>
 </div>
