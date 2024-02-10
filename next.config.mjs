@@ -1,4 +1,6 @@
 import { withContentlayer } from "next-contentlayer"
+import remarkGfm from 'remark-gfm'
+import createMDX from '@next/mdx'
 
 import "./env.mjs"
 
@@ -14,4 +16,15 @@ const nextConfig = {
   },
 }
 
-export default withContentlayer(nextConfig)
+// export default withContentlayer(nextConfig)
+
+const withMDX = createMDX({
+  // Add markdown plugins here, as desired
+  options: {
+    remarkPlugins: [remarkGfm],
+    rehypePlugins: [],
+  },
+})
+ 
+// Merge MDX config with Next.js config
+export default withMDX(nextConfig)

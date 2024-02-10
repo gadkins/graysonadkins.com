@@ -17,28 +17,33 @@ export const notebooksConfig: NotebooksConfig = {
       items: [
         {
           title: "Overview",
-          href: "/notebooks",
+          href: "/notebooks/overview",
         },
+      ],
+    },
+    {
+      title: "Data Preparation",
+      items: [
+        {
+          title: "Utility Functions",
+          href: "/notebooks/data-preparation/utility-functions",
+        },
+        {
+          title: "Common Crawl",
+          href: "/notebooks/data-preparation/common-crawl",
+        },
+        {
+          title: "Synthetic Data",
+          href: "/notebooks/data-preparation/synthetic-data",
+        }
       ],
     },
     {
       title: "Fine-Tuning",
       items: [
         {
-          title: "Basic QLoRA",
-          href: "/notebooks/fine-tuning/qlora-basic",
-        },
-        {
-          title: "Advanced QLoRA",
-          href: "/notebooks/fine-tuning/qlora-advanced",
-        },
-        {
-          title: "Supervised",
-          href: "/notebooks/fine-tuning/supervised",
-        },
-        {
-          title: "Unsupervised",
-          href: "/notebooks/fine-tuning/unspervised",
+          title: "Quantized LoRA (QLoRA)",
+          href: "/notebooks/fine-tuning/qlora",
         },
         {
           title: "Function Calling",
@@ -76,7 +81,7 @@ export const notebooksConfig: NotebooksConfig = {
           href: "/notebooks/mixture-models/mixtral-8x7b",
         },
         {
-          title: "Code: Deepseek Coder",
+          title: "Deepseek Coder",
           href: "/notebooks/mixture-models/mixtral-8x7b",
         }
       ],

@@ -77,6 +77,7 @@ export default async function IndexPage() {
           </div>
         </div>
       </section>
+
       <section
         id="projects"
         className="container space-y-6 bg-neutral-50 py-8 dark:bg-transparent md:py-12 lg:py-24"

@@ -1,0 +1,31 @@
+---
+title: Low-Rank Adaptation (LoRA)
+description: A lightweight training method that reduces the number of trainable parameters
+---
+
+LoRA is a lightweight training method that reduces the number of trainable parameters in large language models and the 
+GPU memory required for training. It is based on the idea of low-rank matrix factorization and adapter modules.  
+
+## Adapter modules
+Instead of fine-tuning all parameters of a pretrained large language model—which would be very expensive—we only target 
+specific sets of weights, called "modules", while the rest are frozen. **But instead of training these modules directly, 
+LoRA trains a smaller matrix representation that maps to the original module.** Once trained, the weights of this 
+*adapter module* are then merged with the original module weights. Adapter modules drastically reduce the number of 
+trainable parameters and thus the computational cost.  
+
+## Low-rank matrix factorization
+
+The smaller matrix representation used by the adapter is acheived via low-rank matrix factorization, which is the process of 
+factoring a large matrix into a product of two smaller matrices of low [rank](https://www.mathsisfun.com/algebra/matrix-rank.html). 
+By reducing the dimensionality of the original matrix, we're able to form a compressed representation that uncovers the 
+latent structure of the data.  
+
+Instead of solving the factorization analytically, however, matrix factorization is achieved by learning each smaller 
+matrix (called an *embedding matrix*) through optimization algorithms such as stochastic gradient descent. As illustrated 
+below, the product of `WH` should closely approximation of the original matrix `V`:  
+
+> **Matrix Factorization**  
+Given an `m x n` matrix `V`, we want to find an `m x r` matrix `W` and an `r x n` matrix `H` 
+such that `V ≅ WH`, i.e. `W` and `H` that minimize a loss function `L(V, W, H)`.  
+
+To see an example and learn more about the loss functions used in matrix factorization, see the [Recommendation Systems](https://developers.google.com/machine-learning/recommendation/collaborative/matrix) course from Google Machine Learning .

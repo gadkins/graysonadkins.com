@@ -30,7 +30,7 @@ interface MainNavProps {
 const components: { title: string; href: string; description: string }[] = [
   {
     title: "Fine-tuning",
-    href: "/notebooks/fine-tuning/qlora-basic",
+    href: "/notebooks/fine-tuning/qlora",
     description:
       "Domain-specific training",
   },
@@ -47,7 +47,7 @@ const components: { title: string; href: string; description: string }[] = [
   },
   {
     title: "Data Pipelines",
-    href: "/notebooks/data-pipelines/deduplication",
+    href: "/notebooks/data-pipelines/create-a-dataset",
     description:
       "Cleaning and synthesizing data",
   },
@@ -132,7 +132,7 @@ export function MainNav({ items, children }: MainNavProps) {
           <NavigationMenuItem>
             <Link href="/docs" legacyBehavior passHref>
               <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                Knowledge Base
+                AI Handbook
               </NavigationMenuLink>
             </Link>
           </NavigationMenuItem>

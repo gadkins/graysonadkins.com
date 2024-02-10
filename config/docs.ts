@@ -29,9 +29,8 @@ export const docsConfig: DocsConfig = {
           href: "/docs/documentation",
         },
         {
-          title: "Contentlayer",
-          href: "/docs/in-progress",
-          disabled: true,
+          title: "LoRA",
+          href: "/docs/documentation/lora",
         },
         {
           title: "Components",

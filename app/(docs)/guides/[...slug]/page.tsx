@@ -15,6 +15,8 @@ import { env } from "@/env.mjs"
 import { absoluteUrl, cn } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/button"
 
+import { Jupyter, Viewer, Notebook, CellSidebar } from '@datalayer/jupyter-react';
+
 interface GuidePageProps {
   params: {
     slug: string[]
