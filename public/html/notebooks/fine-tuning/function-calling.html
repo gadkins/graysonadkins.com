@@ -15115,7 +15115,7 @@ lida 0.0.10 requires uvicorn, which is not installed.</span><span class="ansi-re
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h1 id="Load-model">Load model<a class="anchor-link" href="#Load-model">&#182;</a></h1><p><strong>Note about quantization:</strong></p>
-<p>In this section, we have the option to load a quantized version of the model (see the <a target="_blank" href="/notebooks/fine-tuning/qlora">QLoRA notebook</a> for quantization details) to reduce the computation requirements such that it will fit on a free T4 GPU in Google Colab. If cost is most important to you, then I recommend this option—just uncomment the <code>quantization_config</code> option below.</p>
+<p>In this section, we have the option to load a quantized version of the model (see the <a target="_parent" href="/notebooks/fine-tuning/qlora">QLoRA notebook</a> for quantization details) to reduce the computation requirements such that it will fit on a free T4 GPU in Google Colab. If cost is most important to you, then I recommend this option—just uncomment the <code>quantization_config</code> option below.</p>
 <p>However, I've observed slightly better performance in function-calling fine-tunes when using models at full precision. Note that if you use full precision, you'll need a larger GPU such as an A100. If you're using Google Colab, you'll need to upgrade to Pro or use another service like RunPod or Lambda Labs (which are a bit cheaper).</p>
 
 </div>

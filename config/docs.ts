@@ -33,8 +33,8 @@ export const docsConfig: DocsConfig = {
           href: "/docs/documentation/lora",
         },
         {
-          title: "Components",
-          href: "/docs/documentation/components",
+          title: "Quantization",
+          href: "/docs/documentation/quantization",
         },
         {
           title: "Code Blocks",

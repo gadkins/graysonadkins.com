@@ -22,15 +22,15 @@ export const notebooksConfig: NotebooksConfig = {
       ],
     },
     {
-      title: "Data Preparation",
+      title: "Data Processing",
       items: [
         {
           title: "Utility Functions",
-          href: "/notebooks/data-preparation/utility-functions",
+          href: "/notebooks/data-processing/utility-functions",
         },
         {
-          title: "Common Crawl",
-          href: "/notebooks/data-preparation/common-crawl",
+          title: "Data Extraction",
+          href: "/notebooks/data-processing/data-extraction",
         },
         {
           title: "Synthetic Data",
@@ -70,6 +70,23 @@ export const notebooksConfig: NotebooksConfig = {
       ],
     },
     {
+      title: "Embeddings & RAG",
+      items: [
+        {
+          title: "Embedding Comparison",
+          href: "/notebooks/rag/comparison",
+        },
+        {
+          title: "Basic RAG",
+          href: "/notebooks/rag/basic",
+        },
+        {
+          title: "Advanced RAG",
+          href: "/notebooks/rag/advanced",
+        },
+      ],
+    },
+    {
       title: "Vision & Multimodal",
       items: [
         {
@@ -104,30 +121,6 @@ export const notebooksConfig: NotebooksConfig = {
         {
           title: "GGUF",
           href: "/notebooks/quantization/GGUF",
-        },
-      ],
-    },
-    {
-      title: "Embedding & RAG",
-      items: [
-        {
-          title: "Tokenization",
-          href: "/notebooks/tokenization",
-          disabled: true,
-        },
-        {
-          title: "Embedding",
-          href: "/notebooks/embedding",
-          disabled: true,
-        },
-        {
-          title: "Basic RAG",
-          href: "/notebooks/rag/basic",
-          disabled: true,
-        },
-        {
-          title: "Advanced RAG",
-          href: "/notebooks/rag/advanced",
         },
       ],
     },
