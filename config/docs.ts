@@ -26,23 +26,23 @@ export const docsConfig: DocsConfig = {
       items: [
         {
           title: "Tokenization",
-          href: "/docs/documentation",
+          href: "/docs/handbook/tokenization",
         },
         {
           title: "LoRA",
-          href: "/docs/documentation/lora",
+          href: "/docs/handbook/lora",
         },
         {
           title: "Quantization",
-          href: "/docs/documentation/quantization",
+          href: "/docs/handbook/quantization",
         },
         {
           title: "Code Blocks",
-          href: "/docs/documentation/code-blocks",
+          href: "/docs/handbook/code-blocks",
         },
         {
           title: "Style Guide",
-          href: "/docs/documentation/style-guide",
+          href: "/docs/handbook/style-guide",
         },
         {
           title: "Search",
