@@ -74,10 +74,10 @@ export const notebooksConfig: NotebooksConfig = {
       items: [
         {
           title: "Embedding Comparison",
-          href: "/notebooks/rag/comparison",
+          href: "/notebooks/rag/embedding-comparison",
         },
         {
-          title: "Basic RAG",
+          title: "Naive RAG",
           href: "/notebooks/rag/basic",
         },
         {
@@ -86,56 +86,33 @@ export const notebooksConfig: NotebooksConfig = {
         },
       ],
     },
+    // {
+    //   title: "Vision & Multimodal",
+    //   items: [
+    //     {
+    //       title: "Vision Transformer",
+    //       href: "/notebooks/vision/vit",
+    //     },
+    //     {
+    //       title: "Mixtral 8x7b",
+    //       href: "/notebooks/mixture-models/mixtral-8x7b",
+    //     },
+    //     {
+    //       title: "Deepseek Coder",
+    //       href: "/notebooks/mixture-models/mixtral-8x7b",
+    //     }
+    //   ],
+    // },
     {
-      title: "Vision & Multimodal",
+      title: "Inference & MLOps",
       items: [
-        {
-          title: "Vision Transformer",
-          href: "/notebooks/vision/vit",
-        },
-        {
-          title: "Mixtral 8x7b",
-          href: "/notebooks/mixture-models/mixtral-8x7b",
-        },
-        {
-          title: "Deepseek Coder",
-          href: "/notebooks/mixture-models/mixtral-8x7b",
-        }
-      ],
-    },
-    {
-      title: "Quantization",
-      items: [
-        {
-          title: "4-bit",
-          href: "/notebooks/quantization/4-bit",
-        },
-        {
-          title: "AWQ",
-          href: "/notebooks/quantization/awq",
-        },
-        {
-          title: "GPTQ",
-          href: "/notebooks/quantization/gptq",
-        },
-        {
-          title: "GGUF",
-          href: "/notebooks/quantization/GGUF",
-        },
-      ],
-    },
-    {
-      title: "MLOps",
-      items: [
-        {
-          title: "Inference",
-          href: "/notebooks/mlops/inference",
-          disabled: true,
-        },
         {
           title: "Model Serving",
           href: "/notebooks/mlops/model-serving",
-          disabled: true,
+        },
+        {
+          title: "Speculative Decoding",
+          href: "/notebooks/mlops/speculative-decoding",
         },
         {
           title: "Running LLMs Locally",

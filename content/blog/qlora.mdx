@@ -1,0 +1,93 @@
+---
+title: 'Cost-Efficient Fine-Tuning For Structured Outputs'
+description: 'Quantizing models to reduce cost of fine-tuning for structured outputs'
+image: /images/blog/savings.png
+date: "2024-01-09"
+authors:
+  - grayson
+---
+
+<Callout>
+  **Also see:**  
+  [QLoRA notebook](/notebooks/fine-tuning/qlora)  
+  [Function Calling notebook](/notebooks/fine-tuning/function-calling) 
+</Callout>
+
+## Understanding Model Size and Quantization
+
+For language models, the size of a model is indicative of its capacity to understand and generate language, measured by the number of parameters or weights it possesses. For instance, the Llama 2 model variants, with sizes ranging from 7 billion to 70 billion weights, demonstrate a spectrum of capabilities, from basic to highly nuanced language processing. However, deploying such extensive models poses a significant challenge due to their computational and storage requirements. Typically, each weight in a model is represented by a 32-bit number, which, for a 70 billion parameter model, results in an enormous footprint, far exceeding the memory constraints of commonly available computing resources, such as those provided by Google Colab.
+
+Quantization emerges as a pivotal technique in mitigating these constraints, enabling the use of large models within limited-resource environments. By reducing the precision of the weights from 32 bits to, say, 4 bits, quantization substantially diminishes the model's size without drastically sacrificing its performance. This process transforms the continuous range of values a weight can take into a smaller, discrete set, thus reducing the granularity but retaining the model's essential predictive power. For example, a model initially demanding upwards of 280 gigabytes can be compressed to a mere fraction of that, making it feasible to deploy on platforms with as little as 15 gigabytes of GPU memory. This approach not only democratizes access to cutting-edge models by alleviating hardware limitations but also introduces a trade-off between model size and accuracy, which can be finely tuned to balance performance and resource utilization.  
+
+## QLoRA: Quantized Low-Rank Adaptation
+
+Quantized Low-Rank Adaptation (QLoRA) represents a nuanced approach to fine-tuning large language models, such as Llama 2, in a manner that is both resource-efficient and effective. At its core, QLoRA integrates two key concepts: [quantization](/docs/handbook/quantization) and [low-rank adaptation](/docs/handbook/lora), to optimize the model's performance without the need for extensive computational resources. The essence of quantization, as previously discussed, involves reducing the bit representation of each weight in the model, thereby significantly decreasing its overall size. QLoRa takes this a step further by applying quantization specifically within the context of low-rank adaptation, which focuses on modifying only the most crucial parameters of the model during the fine-tuning process.
+
+Low-rank adaptation acknowledges that not all weights in a model are equally influential to its performance. By identifying and updating only a subset of critical weights, it is possible to achieve substantial improvements in model output with minimal adjustments. This method reduces the complexity of fine-tuning, making it more manageable and faster, particularly for models with billions of parameters. When combined with quantization, the approach allows for substantial model size reduction without compromising the fine-tuning effectiveness. This dual strategy enables the deployment of sophisticated language models in environments with limited GPU memory, such as Google Colab, by ensuring that the fine-tuned model remains compact yet capable.
+
+## Fine-Tuning Steps
+
+### Step 1: Setting Up the Environment
+One of the benefits of quantizing models is that the fine-tuning process can often be done in Google Colab notebooks on free or relatively inexpensive GPU instances. Integration with Google Drive also provides an easy way add persistent storage to the otherwise ephemeral Colab environments. The setup process involves creating a new notebook and installing necessary Python packages critical for the task. This typically includes the Transformers library from Hugging Face, which provides a comprehensive suite of tools and pre-trained models for natural language processing tasks. Users can easily install these packages using the `pip` command directly within the Colab notebook, ensuring that all dependencies are correctly managed and compatible with the fine-tuning objectives. See my [QLoRA notebook](/notebooks/fine-tuning/qlora) for a detailed example of this setup process.
+
+### Step 2: Data Preparation
+Selecting and preparing the right dataset is arguably the most crucial aspect of the fine-tuning process. The choice of data significantly influences the model's performance and its ability to generalize across various language tasks. For effective fine-tuning, the dataset should closely resemble the target application in terms of language style, domain, and complexity. Preparing the data involves cleaning, tokenizing, and possibly segmenting the text into manageable sizes suitable for the model's input. This step may also include dividing the dataset into training, validation, and test sets to enable thorough evaluation and tuning of the model's parameters without overfitting.
+
+### Step 3: Training Process
+The training process is where the model learns from the prepared dataset, adjusting its weights to minimize prediction errors. This involves setting various parameters such as learning rate, batch size, and the number of epochs, which are crucial for optimizing the fine-tuning performance. Monitoring the training progress is essential to ensure that the model is learning effectively, typically by observing the loss function and making adjustments as needed. The use of a notebook in Google Colab facilitates this process by providing an interactive environment where users can execute training scripts, visualize loss curves, and adjust parameters dynamically based on immediate feedback.
+
+### Step 4: Inference and Evaluation
+After fine-tuning, the next step is to run inference with the model to generate predictions on new data. This step tests the model's ability to apply what it has learned to unseen examples. Evaluation involves comparing these predictions against a ground truth to assess performance using metrics such as [accuracy, precision, recall, or F1 score](https://towardsdatascience.com/accuracy-precision-recall-or-f1-331fb37c5cb9), depending on the task. Performing inference in Google Colab is straightforward, with users able to load the fine-tuned model and input data to observe the model's output. The evaluation phase helps in identifying areas where the model excels or where further training and adjustments are needed, guiding future fine-tuning efforts for improved performance.
+
+## Fine-Tuning for Structured Outputs (e.g. Function Calling)
+Advanced fine-tuning techniques, like the ones describe below, enable practitioners to refine the performance of language models beyond basic parameter adjustments, addressing specific challenges and enhancing the model's ability to handle complex tasks. Two such techniques are **prompt masking** and careful management of the **end-of-sequence (EOS) tokens**.  
+
+### Prompt Masking
+Prompt masking involves selectively hiding or altering parts of the input data during training to encourage the model to focus on and predict specific information, thereby improving its understanding and generation capabilities. This technique can be particularly useful in tasks requiring nuanced comprehension or generation based on partial information.   
+
+Typically, a model is graded on its prediction of the next token in both the question and answer. However, our primary goal is for the model to give thoughtful attention to the question, while its performance should be graded based soley on how it predicts the answer; this is achieved by attention and loss masks, respectively.  
+
+``` txt
+Prompt:
+[INST] You are a helpful assistant. Answer the following question concisely:  
+
+What is the capital of France? [/INST]
+
+**Generated Assistant Response:**
+Paris
+
+**Correct Assistant Response:**
+Paris
+```
+
+Note that different models, will often have different prompt start and end delimiters. For example, Llama 2 and Mistral use `[INST]` and `[/INST]`, respectively, whereas OpenChat makes use of `GPT4 Correct User: ` and `<|end_of_turn|>GPT4 Correct Assistant:`.  See the [Function Calling notebook](/notebooks/fine-tuning/function-calling#Prepare-data) for a detailed example of different prompt formats.
+
+### Attention Masking
+Attention mechanisms within language models, such as those used in the Llama 2 model, play an important role in determining the context and relevance of different parts of the input data during the prediction process. By weighting the importance of various input tokens differently, the model can focus on the most relevant information when generating responses or making predictions.  
+
+An attention mask is simply a sequence of 1s and 0s that is multiplied by the input sequence IDs—resulting in a new input sequence where irrelevant tokens are zeroed out (i.e. masked).  
+
+``` python
+    {'input_ids': tensor([[9204, 18, 3763, 456, 222, 13563, 22580, 584]]),
+    'attention_mask': tensor([[1, 1, 1, 0, 1, 1, 0, 1]]),
+    'result': tensor([[9204, 18, 3763, 0, 222, 13563, 0, 584]])}
+```
+
+### Loss Masking
+
+However, this focus can sometimes be too broad or misaligned with the specific goals of a fine-tuning task. In such cases, applying loss masking can direct the model's learning process more precisely. Loss masking allows the trainer to specify which parts of the output should contribute to the loss calculation, effectively guiding the model to prioritize learning from certain segments of the data over others.  
+
+To improve model performance, we can mask the losses associated with the prompt to ensure the model focuses on answering the question, not predicting the next sequence of tokens in the question. Practically, this means taking the losses and multiply them by the loss mask. 
+
+``` python
+    {'input_ids': tensor([[9204, 18, 3763, 456, 222, 13563, 22580, 584, ..., 231]]),
+    'loss_mask': tensor([[0, 0, 0, 0, 0, 0, 0, 0,...0]])}
+```
+
+### End-of-Sequence (EOS) Tokens
+EOS tokens define the boundaries of generated responses or structured data outputs and help ensure that the model accurately recognizes the conclusion of a text segment, which is crucial for generating coherent and contextually appropriate responses. Examples of EOS tokens are `</s>` for Llama and Mistral-style models, and `<|endoftext|>` for GPT-style models.  
+
+When a language model generates text, the EOS token indicates where the model should stop generating further content. This mechanism prevents the model from producing endless streams of text and ensures that the output is concise and relevant to the given prompt. Similarly, during the training phase, EOS tokens help the model learn the structure and length of plausible responses, teaching it to recognize when a complete thought or statement has been formed and when it should conclude its output.
+
+The utilization of EOS tokens is intricately linked with attention mechanisms and loss calculations in model training. For instance, when setting up padding in input sequences to uniform lengths, the positioning of EOS tokens influences attention patterns, ensuring that the model does not place undue significance on padded areas that do not contain meaningful content. Furthermore, in advanced fine-tuning techniques such as loss masking, EOS tokens can be strategically used to fine-tune the model’s focus, ensuring that it accurately learns when to end responses, which is crucial for tasks requiring precise, structured outputs.
+

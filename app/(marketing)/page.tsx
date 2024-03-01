@@ -7,6 +7,8 @@ import { cn } from "@/lib/utils"
 import utilStyles from './utils.module.scss'
 import { buttonVariants } from "@/components/ui/button"
 
+import { Braces } from 'lucide-react';
+
 async function getGitHubStars(): Promise<string | null> {
   try {
     const response = await fetch(
@@ -87,12 +89,18 @@ export default async function IndexPage() {
             Projects
           </h2>
           <p className="max-w-[85%] leading-normal text-muted-foreground sm:text-lg sm:leading-7">
-            For the past 7 years, I've been the Co-Founder & CEO of Uffizzi, a DevOps tooling company.
-            I also work on various side projects in NLP and Computer Vision, and more recently, LLMs.
+            Since 2017, I've been the Co-Founder & Head of Product at Uffizzi, a DevOps tooling company
+            specializing in ephemeral cloud environments. Before Uffizzi, I was a machine learning researcher. I
+            continue to explore various ML topics through my personal projects.
           </p>
         </div>
         <div className="mx-auto grid justify-center gap-4 sm:grid-cols-2 md:max-w-[64rem] md:grid-cols-3">
-          <div className="relative overflow-hidden rounded-lg border bg-background p-2">
+          <Link
+            href="https://uffizzi.com"
+            target="_blank"
+            rel="noreferrer"
+            className="relative overflow-hidden rounded-lg border bg-background p-2 hover:bg-accent hover:text-accent-foreground"
+          >
             <div className="flex h-[180px] flex-col justify-between rounded-md p-6">
               <svg viewBox="0 0 500 500" className="h-11 w-11 fill-current">
                 <path d="M184.91,127.62v214.9c0,20.28,2.39,35.55,7.16,45.79,8.46,18.1,25.06,27.15,49.8,27.15,31.68,0,53.38-12.86,65.1-38.6,6.07-13.95,9.11-32.38,9.11-55.28V127.62h94.53V484.15h-90.61v-50.37c-.87,1.1-3.05,4.37-6.52,9.81-3.48,5.45-7.61,10.25-12.39,14.39-14.57,13.08-28.65,22.03-42.24,26.82-13.59,4.8-29.52,7.2-47.79,7.2-52.62,0-88.07-18.97-106.33-56.91-10.22-20.93-15.33-51.79-15.33-92.57V127.62h95.51Z" /><rect fill="#fed626" x="106.1" y="8" width="284.7" height="58.62" />
@@ -104,79 +112,92 @@ export default async function IndexPage() {
                 </p>
               </div>
             </div>
-          </div>
-          <div className="relative overflow-hidden rounded-lg border bg-background p-2">
+          </Link>
+          <Link
+            href="/notebooks/fine-tuning/function-calling"
+            rel="noreferrer"
+            className="relative overflow-hidden rounded-lg border bg-background p-2 hover:bg-accent hover:text-accent-foreground"
+          >
             <div className="flex h-[180px] flex-col justify-between rounded-md p-6">
-              <svg viewBox="0 0 24 24" className="h-12 w-12 fill-current">
-                <path d="M14.23 12.004a2.236 2.236 0 0 1-2.235 2.236 2.236 2.236 0 0 1-2.236-2.236 2.236 2.236 0 0 1 2.235-2.236 2.236 2.236 0 0 1 2.236 2.236zm2.648-10.69c-1.346 0-3.107.96-4.888 2.622-1.78-1.653-3.542-2.602-4.887-2.602-.41 0-.783.093-1.106.278-1.375.793-1.683 3.264-.973 6.365C1.98 8.917 0 10.42 0 12.004c0 1.59 1.99 3.097 5.043 4.03-.704 3.113-.39 5.588.988 6.38.32.187.69.275 1.102.275 1.345 0 3.107-.96 4.888-2.624 1.78 1.654 3.542 2.603 4.887 2.603.41 0 .783-.09 1.106-.275 1.374-.792 1.683-3.263.973-6.365C22.02 15.096 24 13.59 24 12.004c0-1.59-1.99-3.097-5.043-4.032.704-3.11.39-5.587-.988-6.38a2.167 2.167 0 0 0-1.092-.278zm-.005 1.09v.006c.225 0 .406.044.558.127.666.382.955 1.835.73 3.704-.054.46-.142.945-.25 1.44a23.476 23.476 0 0 0-3.107-.534A23.892 23.892 0 0 0 12.769 4.7c1.592-1.48 3.087-2.292 4.105-2.295zm-9.77.02c1.012 0 2.514.808 4.11 2.28-.686.72-1.37 1.537-2.02 2.442a22.73 22.73 0 0 0-3.113.538 15.02 15.02 0 0 1-.254-1.42c-.23-1.868.054-3.32.714-3.707.19-.09.4-.127.563-.132zm4.882 3.05c.455.468.91.992 1.36 1.564-.44-.02-.89-.034-1.345-.034-.46 0-.915.01-1.36.034.44-.572.895-1.096 1.345-1.565zM12 8.1c.74 0 1.477.034 2.202.093.406.582.802 1.203 1.183 1.86.372.64.71 1.29 1.018 1.946-.308.655-.646 1.31-1.013 1.95-.38.66-.773 1.288-1.18 1.87a25.64 25.64 0 0 1-4.412.005 26.64 26.64 0 0 1-1.183-1.86c-.372-.64-.71-1.29-1.018-1.946a25.17 25.17 0 0 1 1.013-1.954c.38-.66.773-1.286 1.18-1.868A25.245 25.245 0 0 1 12 8.098zm-3.635.254c-.24.377-.48.763-.704 1.16-.225.39-.435.782-.635 1.174-.265-.656-.49-1.31-.676-1.947.64-.15 1.315-.283 2.015-.386zm7.26 0c.695.103 1.365.23 2.006.387-.18.632-.405 1.282-.66 1.933a25.952 25.952 0 0 0-1.345-2.32zm3.063.675c.484.15.944.317 1.375.498 1.732.74 2.852 1.708 2.852 2.476-.005.768-1.125 1.74-2.857 2.475-.42.18-.88.342-1.355.493a23.966 23.966 0 0 0-1.1-2.98c.45-1.017.81-2.01 1.085-2.964zm-13.395.004c.278.96.645 1.957 1.1 2.98a23.142 23.142 0 0 0-1.086 2.964c-.484-.15-.944-.318-1.37-.5-1.732-.737-2.852-1.706-2.852-2.474 0-.768 1.12-1.742 2.852-2.476.42-.18.88-.342 1.356-.494zm11.678 4.28c.265.657.49 1.312.676 1.948-.64.157-1.316.29-2.016.39a25.819 25.819 0 0 0 1.341-2.338zm-9.945.02c.2.392.41.783.64 1.175.23.39.465.772.705 1.143a22.005 22.005 0 0 1-2.006-.386c.18-.63.406-1.282.66-1.933zM17.92 16.32c.112.493.2.968.254 1.423.23 1.868-.054 3.32-.714 3.708-.147.09-.338.128-.563.128-1.012 0-2.514-.807-4.11-2.28.686-.72 1.37-1.536 2.02-2.44 1.107-.118 2.154-.3 3.113-.54zm-11.83.01c.96.234 2.006.415 3.107.532.66.905 1.345 1.727 2.035 2.446-1.595 1.483-3.092 2.295-4.11 2.295a1.185 1.185 0 0 1-.553-.132c-.666-.38-.955-1.834-.73-3.703.054-.46.142-.944.25-1.438zm4.56.64c.44.02.89.034 1.345.034.46 0 .915-.01 1.36-.034-.44.572-.895 1.095-1.345 1.565-.455-.47-.91-.993-1.36-1.565z" />
+              <svg viewBox="0 0 24 24" className="h-12 w-12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                {/* <path d="M8 3H7a2 2 0 0 0-2 2v5a2 2 0 0 1-2 2 2 2 0 0 1 2 2v5c0 1.1.9 2 2 2h1" /><path d="M16 21h1a2 2 0 0 0 2-2v-5c0-1.1.9-2 2-2a2 2 0 0 1-2-2V5a2 2 0 0 0-2-2h-1" /> */}
+                <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
               </svg>
               <div className="space-y-2">
-                <h3 className="font-bold">React 18</h3>
+                <h3 className="font-bold">Advanced Fine-Tuning</h3>
                 <p className="text-sm">
-                  Server and Client Components. Use hook.
+                  The latest techniques for fine-tuning LLMs for function calling and more.
                 </p>
               </div>
             </div>
-          </div>
-          <div className="relative overflow-hidden rounded-lg border bg-background p-2">
+          </Link>
+          <Link
+            href="/notebooks/data-extraction"
+            rel="noreferrer"
+            className="relative overflow-hidden rounded-lg border bg-background p-2 hover:bg-accent hover:text-accent-foreground"
+          >
             <div className="flex h-[180px] flex-col justify-between rounded-md p-6">
-              <svg viewBox="0 0 24 24" className="h-12 w-12 fill-current">
-                <path d="M0 12C0 5.373 5.373 0 12 0c4.873 0 9.067 2.904 10.947 7.077l-15.87 15.87a11.981 11.981 0 0 1-1.935-1.099L14.99 12H12l-8.485 8.485A11.962 11.962 0 0 1 0 12Zm12.004 12L24 12.004C23.998 18.628 18.628 23.998 12.004 24Z" />
+              <svg viewBox="0 0 24 24" className="h-12 w-12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 6H3" /><path d="M10 12H3" /><path d="M10 18H3" /><circle cx="17" cy="15" r="3" /><path d="m21 19-1.9-1.9" />
               </svg>
               <div className="space-y-2">
-                <h3 className="font-bold">Database</h3>
+                <h3 className="font-bold">Data Extraction</h3>
                 <p className="text-sm text-muted-foreground">
-                  ORM using Prisma and deployed on PlanetScale.
+                  Using LLMs to extract data from large documents into structured formats.
                 </p>
               </div>
             </div>
-          </div>
-          <div className="relative overflow-hidden rounded-lg border bg-background p-2">
+          </Link>
+          <Link
+            href="/notebooks/rag/advanced"
+            rel="noreferrer"
+            className="relative overflow-hidden rounded-lg border bg-background p-2 hover:bg-accent hover:text-accent-foreground"
+          >
             <div className="flex h-[180px] flex-col justify-between rounded-md p-6">
-              <svg viewBox="0 0 24 24" className="h-12 w-12 fill-current">
-                <path d="M12.001 4.8c-3.2 0-5.2 1.6-6 4.8 1.2-1.6 2.6-2.2 4.2-1.8.913.228 1.565.89 2.288 1.624C13.666 10.618 15.027 12 18.001 12c3.2 0 5.2-1.6 6-4.8-1.2 1.6-2.6 2.2-4.2 1.8-.913-.228-1.565-.89-2.288-1.624C16.337 6.182 14.976 4.8 12.001 4.8zm-6 7.2c-3.2 0-5.2 1.6-6 4.8 1.2-1.6 2.6-2.2 4.2-1.8.913.228 1.565.89 2.288 1.624 1.177 1.194 2.538 2.576 5.512 2.576 3.2 0 5.2-1.6 6-4.8-1.2 1.6-2.6 2.2-4.2 1.8-.913-.228-1.565-.89-2.288-1.624C10.337 13.382 8.976 12 6.001 12z" />
+              <svg viewBox="0 0 24 24" className="h-12 w-12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect width="8" height="8" x="2" y="2" rx="2" /><path d="M14 2c1.1 0 2 .9 2 2v4c0 1.1-.9 2-2 2" /><path d="M20 2c1.1 0 2 .9 2 2v4c0 1.1-.9 2-2 2" /><path d="M10 18H5c-1.7 0-3-1.3-3-3v-1" /><polyline points="7 21 10 18 7 15" /><rect width="8" height="8" x="14" y="14" rx="2" />              </svg>
+              <div className="space-y-2">
+                <h3 className="font-bold">Advanced RAG</h3>
+                <p className="text-sm text-muted-foreground">
+                  Beyond naive retrieval-augmented generation (RAG).
+                </p>
+              </div>
+            </div>
+          </Link>
+          <Link
+            href="/notebooks/bechmarking"
+            rel="noreferrer"
+            className="relative overflow-hidden rounded-lg border bg-background p-2 hover:bg-accent hover:text-accent-foreground"
+          >
+            <div className="flex h-[180px] flex-col justify-between rounded-md p-6">
+              <svg viewBox="0 0 24 24" className="h-12 w-12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 3v18h18" /><rect width="12" height="4" x="7" y="5" rx="1" /><rect width="7" height="4" x="7" y="13" rx="1" />
               </svg>
               <div className="space-y-2">
-                <h3 className="font-bold">Components</h3>
+                <h3 className="font-bold">Benchmarking</h3>
                 <p className="text-sm text-muted-foreground">
-                  UI components built using Radix UI and styled with Tailwind
-                  CSS.
+                  A practical and customizable guide to benchmarking language models.
                 </p>
               </div>
             </div>
-          </div>
-          <div className="relative overflow-hidden rounded-lg border bg-background p-2">
+          </Link>
+          <Link
+            href="/notebooks/mlops/model-serving"
+            rel="noreferrer"
+            className="relative overflow-hidden rounded-lg border bg-background p-2 hover:bg-accent hover:text-accent-foreground"
+          >
             <div className="flex h-[180px] flex-col justify-between rounded-md p-6">
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1"
-                className="h-12 w-12 fill-current"
-              >
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+              <svg viewBox="0 0 24 24" className="h-12 w-12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect width="20" height="8" x="2" y="2" rx="2" ry="2" /><rect width="20" height="8" x="2" y="14" rx="2" ry="2" /><line x1="6" x2="6.01" y1="6" y2="6" /><line x1="6" x2="6.01" y1="18" y2="18" />
               </svg>
               <div className="space-y-2">
-                <h3 className="font-bold">Authentication</h3>
+                <h3 className="font-bold">Model Serving</h3>
                 <p className="text-sm text-muted-foreground">
-                  Authentication using NextAuth.js and middlewares.
+                  Considerations for serving custom models and creating APIs.
                 </p>
               </div>
             </div>
-          </div>
-          <div className="relative overflow-hidden rounded-lg border bg-background p-2">
-            <div className="flex h-[180px] flex-col justify-between rounded-md p-6">
-              <svg viewBox="0 0 24 24" className="h-12 w-12 fill-current">
-                <path d="M13.976 9.15c-2.172-.806-3.356-1.426-3.356-2.409 0-.831.683-1.305 1.901-1.305 2.227 0 4.515.858 6.09 1.631l.89-5.494C18.252.975 15.697 0 12.165 0 9.667 0 7.589.654 6.104 1.872 4.56 3.147 3.757 4.992 3.757 7.218c0 4.039 2.467 5.76 6.476 7.219 2.585.92 3.445 1.574 3.445 2.583 0 .98-.84 1.545-2.354 1.545-1.875 0-4.965-.921-6.99-2.109l-.9 5.555C5.175 22.99 8.385 24 11.714 24c2.641 0 4.843-.624 6.328-1.813 1.664-1.305 2.525-3.236 2.525-5.732 0-4.128-2.524-5.851-6.594-7.305h.003z" />
-              </svg>
-              <div className="space-y-2">
-                <h3 className="font-bold">Subscriptions</h3>
-                <p className="text-sm text-muted-foreground">
-                  Free and paid subscriptions using Stripe.
-                </p>
-              </div>
-            </div>
-          </div>
+          </Link>
         </div>
         <div className="mx-auto text-center md:max-w-[58rem]">
           <p className="leading-normal text-muted-foreground sm:text-lg sm:leading-7">
@@ -184,7 +205,7 @@ export default async function IndexPage() {
           </p>
         </div>
       </section>
-      <section id="open-source" className="container py-8 md:py-12 lg:py-24">
+      <section id="resume" className="container py-8 md:py-12 lg:py-24">
         <div className="mx-auto flex max-w-[58rem] flex-col items-center justify-center gap-4 text-center">
           <h2 className="font-heading text-3xl leading-[1.1] sm:text-3xl md:text-6xl">
             Resume

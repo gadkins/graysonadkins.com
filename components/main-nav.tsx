@@ -29,37 +29,15 @@ interface MainNavProps {
 
 const components: { title: string; href: string; description: string }[] = [
   {
-    title: "Fine-tuning",
-    href: "/notebooks/fine-tuning/qlora",
+    title: "Uffizzi",
+    href: "https://uffizzi.com",
     description:
-      "Domain-specific training",
-  },
-  {
-    title: "Multimodality",
-    href: "/notebooks/mixture-of-experts",
-    description:
-      "Images, audio, code, and beyond",
+      "Multi-tenant Developer Platforms",
   },
   {
     title: "Embedding & RAG",
-    href: "/notebooks/rag",
+    href: "/notebooks/rag/embedding-comparison",
     description: "Basic and advanced RAG",
-  },
-  {
-    title: "Data Pipelines",
-    href: "/notebooks/data-pipelines/create-a-dataset",
-    description:
-      "Cleaning and synthesizing data",
-  },
-  {
-    title: "Quantization",
-    href: "/notebooks/quantization/awq",
-    description: "Optimizing for memory efficiency",
-  },
-  {
-    title: "MLOps",
-    href: "/notebooks/mlops/inference",
-    description: "Model serving and inference",
   },
 ]
 
@@ -74,40 +52,9 @@ export function MainNav({ items, children }: MainNavProps) {
       </Link>
       <NavigationMenu>
         <NavigationMenuList>
-          <NavigationMenuItem>
-            <NavigationMenuTrigger>Projects</NavigationMenuTrigger>
-            <NavigationMenuContent>
-              <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
-                <li className="row-span-3">
-                  <NavigationMenuLink asChild>
-                    <a
-                      className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
-                      href="https://uffizzi.com" target="_blank"
-                    >
-                      <Icons.logo className="h-6 w-6" />
-                      <div className="mb-2 mt-4 text-lg font-medium">
-                        Uffizzi
-                      </div>
-                      <p className="text-sm leading-tight text-muted-foreground">
-                        Software platform for building developer portals
-                      </p>
-                    </a>
-                  </NavigationMenuLink>
-                </li>
-                <ListItem href="/docs" title="AI/ML">
-                  Selected projects in LLMs, NLP, and Computer Vision.
-                </ListItem>
-                <ListItem href="/docs/installation" title="DevOps/MLOps">
-                  How to install Uffizzi to create self-serve environments.
-                </ListItem>
-                <ListItem href="/docs/quickstart" title="UI/UX Design">
-                  Create your first environment in less than 5 minutes.
-                </ListItem>
-              </ul>
-            </NavigationMenuContent>
-          </NavigationMenuItem>
-          <NavigationMenuItem>
-            <NavigationMenuTrigger><Link href="/notebooks/overview" >Notebooks</Link></NavigationMenuTrigger>
+
+          {/* <NavigationMenuItem>
+            <NavigationMenuTrigger><Link href="/notebooks/overview" >Projects</Link></NavigationMenuTrigger>
             <NavigationMenuContent>
               <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
                 {components.map((component) => (
@@ -121,6 +68,55 @@ export function MainNav({ items, children }: MainNavProps) {
                 ))}
               </ul>
             </NavigationMenuContent>
+          </NavigationMenuItem> */}
+          <NavigationMenuItem>
+            <Link href="/#projects" legacyBehavior passHref>
+              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                Projects
+              </NavigationMenuLink>
+            </Link>
+          </NavigationMenuItem>
+          <NavigationMenuItem>
+            <NavigationMenuTrigger><Link href="/notebooks/overview" >Notebooks</Link></NavigationMenuTrigger>
+            <NavigationMenuContent>
+              <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
+                <li className="row-span-4">
+                  <NavigationMenuLink asChild>
+                    <a
+                      className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
+                      href="/notebooks/overview"
+                    >
+                      <Icons.jupyter className="h-6 w-6" />
+                      <div className="mb-2 mt-4 text-lg font-medium">
+                        Notebooks
+                      </div>
+                      <p className="text-sm leading-tight text-muted-foreground">
+                        A collection of machine learning notebooks for various tasks.
+                      </p>
+                    </a>
+                  </NavigationMenuLink>
+                </li>
+                <ListItem href="/notebooks/data-processing/utility-functions" title="Data Processing">
+                  Data preparation and synthesis
+                </ListItem>
+                <ListItem href="/notebooks/fine-tuning/qlora" title="Fine-tuning">
+                  Domain-specific training
+                </ListItem>
+                <ListItem href="/notebooks/rag/embedding-comparison" title="Embeddings & RAG">
+                  Basic and advanced RAG
+                </ListItem>
+                <ListItem href="/notebooks/mlops/model-serving" title="Inference & MLOps">
+                  Model serving and optimization
+                </ListItem>
+              </ul>
+            </NavigationMenuContent>
+          </NavigationMenuItem>
+          <NavigationMenuItem>
+            <Link href="/docs" legacyBehavior passHref>
+              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                AI Handbook
+              </NavigationMenuLink>
+            </Link>
           </NavigationMenuItem>
           <NavigationMenuItem>
             <Link href="/blog" legacyBehavior passHref>
@@ -130,9 +126,10 @@ export function MainNav({ items, children }: MainNavProps) {
             </Link>
           </NavigationMenuItem>
           <NavigationMenuItem>
-            <Link href="/docs" legacyBehavior passHref>
-              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                AI Handbook
+            <Link href="/#resume" legacyBehavior passHref>
+              <NavigationMenuLink className="group text-sm font-medium transition-colors transition duration-300">
+                Resume
+                <span className="block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-custom-orange"></span>
               </NavigationMenuLink>
             </Link>
           </NavigationMenuItem>

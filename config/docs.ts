@@ -29,7 +29,11 @@ export const docsConfig: DocsConfig = {
           href: "/docs/handbook/tokenization",
         },
         {
-          title: "LoRA",
+          title: "Embeddings",
+          href: "/docs/handbook/embeddings",
+        },
+        {
+          title: "Low-Rank Adaptation (LoRA)",
           href: "/docs/handbook/lora",
         },
         {
