@@ -112,7 +112,7 @@ export function MainNav({ items, children }: MainNavProps) {
             </NavigationMenuContent>
           </NavigationMenuItem>
           <NavigationMenuItem>
-            <Link href="/docs" legacyBehavior passHref>
+            <Link href="/handbook" legacyBehavior passHref>
               <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                 AI Handbook
               </NavigationMenuLink>
@@ -127,9 +127,8 @@ export function MainNav({ items, children }: MainNavProps) {
           </NavigationMenuItem>
           <NavigationMenuItem>
             <Link href="/#resume" legacyBehavior passHref>
-              <NavigationMenuLink className="group text-sm font-medium transition-colors transition duration-300">
+              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                 Resume
-                <span className="block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-custom-orange"></span>
               </NavigationMenuLink>
             </Link>
           </NavigationMenuItem>

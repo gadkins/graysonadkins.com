@@ -4,7 +4,7 @@ export const docsConfig: DocsConfig = {
   mainNav: [
     {
       title: "Documentation",
-      href: "/docs",
+      href: "/handbook",
     },
     {
       title: "Guides",
@@ -17,7 +17,7 @@ export const docsConfig: DocsConfig = {
       items: [
         {
           title: "Introduction",
-          href: "/docs",
+          href: "/handbook",
         },
       ],
     },
@@ -26,31 +26,31 @@ export const docsConfig: DocsConfig = {
       items: [
         {
           title: "Tokenization",
-          href: "/docs/handbook/tokenization",
+          href: "/handbook/tokenization",
         },
         {
           title: "Embeddings",
-          href: "/docs/handbook/embeddings",
+          href: "/handbook/embeddings",
         },
         {
           title: "Low-Rank Adaptation (LoRA)",
-          href: "/docs/handbook/lora",
+          href: "/handbook/lora",
         },
         {
           title: "Quantization",
-          href: "/docs/handbook/quantization",
+          href: "/handbook/quantization",
         },
         {
           title: "Code Blocks",
-          href: "/docs/handbook/code-blocks",
+          href: "/handbook/code-blocks",
         },
         {
           title: "Style Guide",
-          href: "/docs/handbook/style-guide",
+          href: "/handbook/style-guide",
         },
         {
           title: "Search",
-          href: "/docs/in-progress",
+          href: "/handbook/in-progress",
           disabled: true,
         },
       ],

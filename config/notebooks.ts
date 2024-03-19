@@ -111,6 +111,10 @@ export const notebooksConfig: NotebooksConfig = {
           href: "/notebooks/mlops/model-serving",
         },
         {
+          title: "Function Calling API",
+          href: "/notebooks/mlops/function-calling-api",
+        },
+        {
           title: "Speculative Decoding",
           href: "/notebooks/mlops/speculative-decoding",
         },
