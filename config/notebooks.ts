@@ -123,6 +123,11 @@ export const notebooksConfig: NotebooksConfig = {
           href: "/notebooks/mlops/model-serving",
           disabled: true,
         },
+        {
+          title: "Serverless Inference",
+          href: "/notebooks/mlops/serverless",
+          disabled: true,
+        },
       ],
     },
   ],

@@ -193,7 +193,7 @@ export default async function IndexPage() {
               <div className="space-y-2">
                 <h3 className="font-bold">Model Serving</h3>
                 <p className="text-sm text-muted-foreground">
-                  Considerations for serving custom models and creating APIs.
+                  Serving custom models and measuring inference performance.
                 </p>
               </div>
             </div>

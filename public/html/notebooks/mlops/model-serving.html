@@ -14590,6 +14590,9 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <li>Measure important metrics of your deployed model to determine how many users it can concurrently serve and performance expectations</li>
 <li>Understand the tradeoffs between GPU performance and cost  </li>
 </ul>
+<h2 id="Source-Code">Source Code<a class="anchor-link" href="#Source-Code">&#182;</a></h2>
+<p>The Python scripts used in this notebook are available in the <a href="https://github.com/gadkins/ai-cookbook/tree/main/inference" target="_parent"><code>ai-cookbook</code></a> repo on my GitHub.</p>
+<p>I've also made available free, one-click Runpod templates for both TGI <a href="https://runpod.io/console/gpu-cloud?template=t6sgcn049x&ref=n2u8jwou" target="_parent">(here)</a> and vLLM<a href="https://runpod.io/console/gpu-cloud?template=tdemx3xfek&ref=n2u8jwou" target="_parent">(here)</a>.</p>
 <h2 id="Pre-requisites">Pre-requisites<a class="anchor-link" href="#Pre-requisites">&#182;</a></h2><ul>
 <li>A funded account with Runpod, Lamda Labs, AWS, or other cloud provider with GPU availability  </li>
 <li>Some familiarity with servers, APIs, and the cloud is helpful  </li>
@@ -14700,6 +14703,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <strong>Minimum GPU memory (VRAM)</strong>: 48 GB<br>
 <strong>Recommended GPUs</strong>: A6000, A100, H100<br>
 <strong>Inference toolkit</strong>: TGI</p>
+<p>If you're using Runpod.io, you can use <a href="https://runpod.io/console/gpu-cloud?template=t6sgcn049x&ref=n2u8jwou" target="_parent">this one-click template</a> to deploy your API in seconds. The sections below discuss configuration details, regardless of which cloud provider you choose.</p>
 <h3 id="Selecting-a-GPU"><strong>Selecting a GPU</strong><a class="anchor-link" href="#Selecting-a-GPU">&#182;</a></h3><p>I'll use Runpod.io to serve my model, but the general steps outlined here will work for any cloud provider.</p>
 <p>Mixtral 8x7b requires at least 48 GB RAM, so you'll need an A6000, A100, or H100.</p>
 <p>I'll test in four different configurations using the following GPUs:</p>
@@ -14715,7 +14719,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </ol>
 <h3 id="Using-the-Docker-image"><strong>Using the Docker image</strong><a class="anchor-link" href="#Using-the-Docker-image">&#182;</a></h3><p>The easiest way to use TGI is via the official Docker image, available on GitHub Container Registry (ghcr). This image bundles the model with all its dependencies and ensure it is compatible with your chosen cloud provider's runtime environment. It takes as an input the model you want to serve, along with any options you want like quantization method, max tokens, speculative decoding etc.</p>
 <blockquote><p><strong>Important</strong><br>
-To enable GPU access for your container, you'll need to install the <a href="https://github.com/NVIDIA/nvidia-container-toolkit"><code>nvidia-container-toolkit</code></a> on your server and set the <code>--gpus</code> flag in your <code>docker run</code> command, as shown below. Some providers (like Runpod), will pre-install this dependency so you don't have to.</p>
+To enable GPU access for your container, you'll need to install the <a href="https://github.com/NVIDIA/nvidia-container-toolkit" target="_parent"><code>nvidia-container-toolkit</code></a> on your server and set the <code>--gpus</code> flag in your <code>docker run</code> command, as shown below. Some providers (like Runpod), will pre-install this dependency so you don't have to.</p>
 </blockquote>
 <p><strong>Container image</strong>: <code>ghcr.io/huggingface/text-generation-inference:1.4</code><br>
 <strong>Container disk (temporary)</strong>: <code>5 GB</code><br>
@@ -15301,11 +15305,12 @@ Optimizers (flash attention, paged attention)
 Distributed tracing (with Open Telemetry, Prometheus)
 Speculative decoding (to improve tokens generation speed)</p>
 <h2 id="Setup">Setup<a class="anchor-link" href="#Setup">&#182;</a></h2><p>This is what we're going to deploy:
-Model: Mixtral 8x7b Instruct
-Quantization: AWQ
-Minimum GPU memory (VRAM): 48 GB
-Recommended GPUs: A6000, A100, H100
-Inference toolkit: vLLM</p>
+  <p><strong>Model</strong>: Mixtral 8x7b Instruct<br>
+    <strong>Quantization</strong>: AWQ<br>
+    <strong>Minimum GPU memory (VRAM)</strong>: 48 GB<br>
+    <strong>Recommended GPUs</strong>: A6000, A100, H100<br>
+    <strong>Inference toolkit</strong>: vLLM</p>
+<p>If you're using Runpod.io, you can use <a href="https://runpod.io/console/gpu-cloud?template=tdemx3xfek&ref=n2u8jwou" target="_parent">this one-click template</a> to deploy your API in seconds. The sections below discuss configuration details, regardless of which cloud provider you choose.</p>
 <h3 id="Selecting-a-GPU"><strong>Selecting a GPU</strong><a class="anchor-link" href="#Selecting-a-GPU">&#182;</a></h3><p>We'll use the same GPUs as we did with the TGI tests, except for the NVIDIA H100 PCIe, which had comparable result to the A100, but for more than 2x more money. Therefore, I skip the H100 PCIe test in this section.</p>
 <h3 id="Using-the-Docker-image"><strong>Using the Docker image</strong><a class="anchor-link" href="#Using-the-Docker-image">&#182;</a></h3><p>The easiest way to use vLLM is via Docker image, available on Docker Hub. This image bundles the model with all its dependencies and ensure it is compatible with your chosen cloud provider's runtime environment. It takes as an input the model you want to serve, along with any options you want like quantization method, max tokens, speculative decoding etc.</p>
 <blockquote><p><strong>Important</strong><br>
