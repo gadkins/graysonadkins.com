@@ -14581,13 +14581,9 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h1 id="Parameter-Efficient-Fine-Tuning-of-Llama-2-with-QLoRA"><strong>Parameter-Efficient Fine-Tuning of Llama 2 with QLoRA</strong><a class="anchor-link" href="#Parameter-Efficient-Fine-Tuning-of-Llama-2-with-QLoRA">&#182;</a></h1>
-<p>By <a href="https://twitter.com/GraysonAdkins" target="_parent">Grayson Adkins</a></p>
+<p>by <a href="https://twitter.com/GraysonAdkins" target="_parent">Grayson Adkins</a>, updated January 30, 2024</p>
 <p>This notebook demonstrates basic parameter-efficient fine-tuning (PEFT) of Llama 2 using 4-bit quantized <a target="_blank" href="https://arxiv.org/abs/2106.09685">LoRA</a> (QLoRA). It leverages the <code>transformers</code> and <code>PEFT</code> libraries from Hugging Face for quantization, LoRA, and fine-tuning.</p>
-<p>This notebook is based on <a target="_blank" href="https://huggingface.co/blog/4bit-transformers-bitsandbytes">this blog by Hugging Face</a> and closely follows the outline of <a target="_blank" href="https://colab.research.google.com/drive/1uMSS1o_8YOPyG1X_4k6ENEE3kJfBGGhH?usp=sharing#scrollTo=XIyP_0r6zuVc">this notebook</a> from Trelis Research.</p>
-<p>Read the QLoRA paper:</p>
-<blockquote><p><a target="_blank" href="https://arxiv.org/abs/2305.14314">Dettmers, Tim, et al. "Qlora: Efficient finetuning of quantized llms." arXiv preprint arXiv:2305.14314 (2023).</a></p>
-</blockquote>
-
+<a href="https://colab.research.google.com/drive/1jL1JE-l8R7kO-dRNig1kNC5eBzNuV61N?usp=share_link" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
 </div>
 </div>
 </div>
@@ -14615,8 +14611,8 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <li>Fine-tune using just a single GPU</li>
 <li>Push the merged model or adapters to HuggingFace Hub</li>
 </ul>
-<h2 id="Source-Code">Source Code<a class="anchor-link" href="#Source-Code">&#182;</a></h2><p>The source code for this notebook is available in the <a href="https://github.com/gadkins/ai-cookbook/blob/main/fine-tuning/qlora_llama_2.ipynb" target="_parent"><code>ai-cookbook</code></a> repo on my GitHub.</p>
-
+<h2 id="Source-Code">Source Code<a class="anchor-link" href="#Source-Code">&#182;</a></h2><p>The source code for this notebook is available in the <a href="https://github.com/gadkins/ai-cookbook/blob/main/fine-tuning/qlora_llama_2.ipynb" target="_parent">ai-cookbook</a> repo on my GitHub.</p>
+<p><strong>Attribution:</strong> This notebook is based on <a target="_blank" href="https://huggingface.co/blog/4bit-transformers-bitsandbytes">this blog by Hugging Face</a> and closely follows the outline of <a target="_blank" href="https://colab.research.google.com/drive/1uMSS1o_8YOPyG1X_4k6ENEE3kJfBGGhH?usp=sharing#scrollTo=XIyP_0r6zuVc">this notebook</a> from Trelis Research.</p>
 </div>
 </div>
 </div>
@@ -14704,6 +14700,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p><strong>Read the QLoRA paper:</strong> <a target="_blank" href="https://arxiv.org/abs/2305.14314">Dettmers, Tim, et al. "Qlora: Efficient finetuning of quantized llms." arXiv preprint arXiv:2305.14314 (2023).</a></p>
 <p>Quantized Low-Rank Adaptation (QLoRA) is an efficient fine-tuning technique designed to reduce the amount of memory needed to fine-tune a pretrained language model without sacrificing task performance.</p>
 <p>The result of this approach is that a large language model such as Llama 2 with 7, 13, or 70 billion parameters can be fine-tuned on a single GPU—thus reducing cost. Additionally, fine-tuning relatively small models using QLoRA has been shown to outperform much larger pre-trained models.</p>
 <p>QLoRA achieves this by leveraging the following  techniques and/or innovations:</p>

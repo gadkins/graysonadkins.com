@@ -35,6 +35,7 @@ export const notebooksConfig: NotebooksConfig = {
         {
           title: "Synthetic Data",
           href: "/notebooks/data-preparation/synthetic-data",
+          disabled: true,
         }
       ],
     },
@@ -104,11 +105,15 @@ export const notebooksConfig: NotebooksConfig = {
     //   ],
     // },
     {
-      title: "Inference & MLOps",
+      title: "Inference & Evaluation",
       items: [
         {
           title: "Model Serving",
           href: "/notebooks/mlops/model-serving",
+        },
+        {
+          title: "Benchmarking",
+          href: "/notebooks/mlops/benchmarking",
         },
         {
           title: "Function Calling API",

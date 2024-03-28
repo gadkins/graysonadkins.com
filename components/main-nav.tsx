@@ -97,15 +97,15 @@ export function MainNav({ items, children }: MainNavProps) {
                   </NavigationMenuLink>
                 </li>
                 <ListItem href="/notebooks/data-processing/utility-functions" title="Data Processing">
-                  Data preparation and synthesis
+                  Data pipelines and synthesis
                 </ListItem>
                 <ListItem href="/notebooks/fine-tuning/qlora" title="Fine-tuning">
                   Domain-specific training
                 </ListItem>
                 <ListItem href="/notebooks/rag/embedding-comparison" title="Embeddings & RAG">
-                  Basic and advanced RAG
+                  Embeddings and advanced RAG
                 </ListItem>
-                <ListItem href="/notebooks/mlops/model-serving" title="Inference & MLOps">
+                <ListItem href="/notebooks/mlops/model-serving" title="Inference & Evaluation">
                   Model serving and optimization
                 </ListItem>
               </ul>

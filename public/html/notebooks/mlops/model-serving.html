@@ -14581,8 +14581,9 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h1 id="Model-Serving"><strong>Model Serving: How to Set Up an Inference API and Measure Performance</strong><a class="anchor-link" href="#Model-Serving">&#182;</a></h1>
-<p>By <a href="https://twitter.com/GraysonAdkins" target="_parent">Grayson Adkins</a></p>
+<p>by <a href="https://twitter.com/GraysonAdkins" target="_parent">Grayson Adkins</a>, updated March 21, 2024</p>
 <p>This notebook focuses on serving custom language models on a variety of GPUs. I explore quantization considerations, GPU selection, popular inference toolkits TGI and vLLM, and include the python code I use for querying models. I also evaluate performance, particularly tokens per second, and discuss other metrics including latency and throughput.</p>
+<a href="https://colab.research.google.com/drive/1a2wBgkSAZZjcHUueEFksTcQC1GniVrCf?usp=share_link" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
 <h2 id="Why-should-you-read-this-notebook?">Why should you read this notebook?<a class="anchor-link" href="#Why-should-you-read-this-notebook?">&#182;</a></h2><p>You want to:</p>
 <ul>
 <li>Learn how to deploy a model to the cloud and query it</li>
@@ -14594,7 +14595,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </ul>
 <h2 id="Source-Code">Source Code<a class="anchor-link" href="#Source-Code">&#182;</a></h2>
 <p>The Python scripts used in this notebook are available in the <a href="https://github.com/gadkins/ai-cookbook/tree/main/inference" target="_parent"><code>ai-cookbook</code></a> repo on my GitHub.</p>
-<p>I've also made available free, one-click Runpod templates for both TGI <a href="https://runpod.io/console/gpu-cloud?template=t6sgcn049x&ref=n2u8jwou" target="_parent">(here)</a> and vLLM<a href="https://runpod.io/console/gpu-cloud?template=tdemx3xfek&ref=n2u8jwou" target="_parent">(here)</a>.</p>
+<p>I've also made available free, one-click Runpod templates for both TGI <a href="https://runpod.io/console/gpu-cloud?template=t6sgcn049x&ref=n2u8jwou" target="_parent">(here)</a> and vLLM <a href="https://runpod.io/console/gpu-cloud?template=tdemx3xfek&ref=n2u8jwou" target="_parent">(here)</a>.</p>
 <h2 id="Pre-requisites">Pre-requisites<a class="anchor-link" href="#Pre-requisites">&#182;</a></h2><ul>
 <li>A funded account with Runpod, Lamda Labs, AWS, or other cloud provider with GPU availability  </li>
 <li>Some familiarity with servers, APIs, and the cloud is helpful  </li>
