@@ -105,7 +105,7 @@ export function MainNav({ items, children }: MainNavProps) {
                 <ListItem href="/notebooks/rag/embedding-comparison" title="Embeddings & RAG">
                   Embeddings and advanced RAG
                 </ListItem>
-                <ListItem href="/notebooks/mlops/model-serving" title="Inference & Evaluation">
+                <ListItem href="/notebooks/inference/model-serving" title="Inference & Evaluation">
                   Model serving and optimization
                 </ListItem>
               </ul>

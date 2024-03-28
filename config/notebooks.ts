@@ -109,28 +109,28 @@ export const notebooksConfig: NotebooksConfig = {
       items: [
         {
           title: "Model Serving",
-          href: "/notebooks/mlops/model-serving",
+          href: "/notebooks/inference/model-serving",
         },
         {
-          title: "Benchmarking",
-          href: "/notebooks/mlops/benchmarking",
+          title: "Benchmarking LLMs",
+          href: "/notebooks/inference/benchmarking-llms",
         },
         {
           title: "Function Calling API",
-          href: "/notebooks/mlops/function-calling-api",
+          href: "/notebooks/inference/function-calling-api",
         },
         {
           title: "Speculative Decoding",
-          href: "/notebooks/mlops/speculative-decoding",
+          href: "/notebooks/inference/speculative-decoding",
         },
         {
           title: "Running LLMs Locally",
-          href: "/notebooks/mlops/model-serving",
+          href: "/notebooks/inference/model-serving",
           disabled: true,
         },
         {
           title: "Serverless Inference",
-          href: "/notebooks/mlops/serverless",
+          href: "/notebooks/inference/serverless",
           disabled: true,
         },
       ],

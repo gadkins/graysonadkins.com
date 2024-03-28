@@ -3,7 +3,7 @@
 <head><meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>overview-2</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>benchmarking</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 
 
 
@@ -14580,18 +14580,773 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h1 id="Overview"><strong>Notebooks Overview</strong><a class="anchor-link" href="#Overview">&#182;</a></h1><p>It's useful to read papers and blogs about machine learning, but I find that there's no subsitute for hands-on implementation to really understand a given topic in-depth, with all its nuances. I use Jupyter Notebooks to work through various ML and "AI engineering" topics, and I've included a subset of them here.</p>
-<p>The provided Jupyter Notebooks cover a broad spectrum of machine learning topics, focusing on various aspects of data processing, fine-tuning, embeddings, vision and multimodal learning, as well as inference and evaluation considerations.</p>
-<h3 id="Legal-Notice">Legal Notice<a class="anchor-link" href="#Legal-Notice">&#182;</a></h3><p><strong>Copyright Note: </strong>In some notebooks, I have borrowed techniques or code snippets from other online sources, such as blogs or tutorials. I've tried to provide attribution in such cases. If you own the copyright of any content provided here, please email me at grayson@uffizzi.com, and I'll be happy to take it down.</p>
-<p><strong>License Note: </strong>These notebooks are included here for educational purposes only (both my own and the reader's). Commercial use of any code is prohibited without prior written consent.</p>
-<h2 id="Fine-tuning">Fine-tuning<a class="anchor-link" href="#Fine-tuning">&#182;</a></h2><p>Fine-tuning techniques are extensively explored, including methods such as quantized LoRA (QLoRA), which facilitates quick adaptation of models to specific tasks. Additionally, the notebooks delve into function calling, chat fine-tuning, and employing techniques like RAG fine-tuning and Direct Preference Optimization (DPO) to enhance model performance. Long context processing is also addressed, crucial for tasks requiring extensive context comprehension.</p>
-<h2 id="Embeddings-&amp;-RAG">Embeddings &amp; RAG<a class="anchor-link" href="#Embeddings-&amp;-RAG">&#182;</a></h2><p>In this section, a comparison of embeddings models and other variables affecting retrieval-augmented generation (RAG) performace are evaluated. Additionally, I expore advanced RAG techniques, such as query pipelines, routing, and tool use, using <a target="_blank" href="https://www.llamaindex.ai">LlamaIndex</a> as an orchestrator.</p>
-<h2 id="Vision-&amp;-Multimodality">Vision &amp; Multimodality<a class="anchor-link" href="#Vision-&amp;-Multimodality">&#182;</a></h2><p>In this section, I explore domains outside of NLP, focusing on vision, video, 3D models, and code. I also explore mixture of experts (MoE) models and models that support multimodality.</p>
-<h2 id="Inference-&amp;-Evaluation">Inference &amp; Evaluation<a class="anchor-link" href="#Infernce-&amp;-Evaluation">&#182;</a></h2><p>Lastly, considerations for inference are outlined, encompassing aspects of MLOps, like model serving and the deployment of LLMs, plus metrics, benchmarks, and scripts for evaluating inference performance. These practices are essential for deploying machine learning models into production environments efficiently, ensuring scalability, reliability, and performance optimization throughout the model lifecycle.</p>
+<h1 id="Benchmarking-LLMs"><strong>Benchmarking LLMs</strong><a class="anchor-link" href="#Benchmarking-LLMs">&#182;</a></h1><p>by <a href="https://twitter.com/GraysonAdkins">Grayson Adkins</a>, update March 28, 2024</p>
+<p>This notebook provides practical benchmarking for large language models (LLMs) on a variety of technical tasks, such as converting code from one programming language to another, writing bash one-liners, explaining code snippets, and more.</p>
+<p><a href="https://colab.research.google.com/drive/1ZFux53cdCgQbUj8nY_LlGw1FlyrFUI12?usp=share_link" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a></p>
+<p><strong>Attribution</strong><br>
+This notebook is based on a new benchmark called <a href="https://github.com/carlini/yet-another-applied-llm-benchmark">yet-another-applied-llm-benchmark</a> created by of <a href="https://nicholas.carlini.com/">Nicholas Carlini</a>, a research scientist at Google DeepMind. He has a good write-up on the motivation and details on <a href="https://nicholas.carlini.com/writing/2024/my-benchmark-for-large-language-models.html">his personal blog</a>.</p>
+<h2 id="Why-should-you-read-this-notebook?">Why should you read this notebook?<a class="anchor-link" href="#Why-should-you-read-this-notebook?">&#182;</a></h2><p>You want:</p>
+<ul>
+<li>To evaluate LLMs using a practical benchmark for a set of challenging, real-world technical tasks.  </li>
+<li>You can a benchmark which is flexible and extensible, whihch support for adding new tests, more sophisticated logic flows, and new LLMs, including custom/self-hosted models.  </li>
+<li>A safe way to execute code written by LLMs and in an automated way.  </li>
+<li>A way to easily generate reports and compare model's relative performance on the tasks.  </li>
+</ul>
+<h2 id="About-the-tasks">About the tasks<a class="anchor-link" href="#About-the-tasks">&#182;</a></h2><p>The tasks are taken from real-world usage of LLMs by technical users (primarily by Carlini himself). The goal is to practically inform the evaluator if a given model is capable of performing these challenging tasks. Failure to perform a task is not an indication that the model is bad. That is, the benchmark is <strong>not</strong> designed to be a scientific benchmark used to decide if one model is better than another. Instead, it should be used to see how models are progressing in accurately performing useful technical tasks.</p>
+<h2 id="Highlights">Highlights<a class="anchor-link" href="#Highlights">&#182;</a></h2><p>The benchmark includes:</p>
+<ul>
+<li>Nearly 100 real-world technical tasks. You can see the full list <a href="https://github.com/carlini/yet-another-applied-llm-benchmark/tree/main/tests">here</a>.  </li>
+<li>A code extractor and interpreter to safely execute LLM-generated code in a container  </li>
+<li>A simple data workflow domain specific language for composing, evaluating and adding new tasks. Users can define task "node" objects and append nodes and strings with the <code>&gt;&gt;</code> operator. For example, <code>'Write a "hello world" program in python' &gt;&gt; LLMRun() &gt;&gt; PythonRun() &gt;&gt; SubstringEvaluator("hello world")</code>, instructs an LLM to write a program that prints "hello world" and then checks for a matching string in the output. According to Carlini, this format supports more sophisticated behavior than other benchmarks.    </li>
+<li>For some tasks, especially those which are not easily verifiable by string matching, an advanced LLM (such as GPT-4) is used to partially evaluate the output. For example, the task <code>draw_flag_bmp.py</code> tasks a model to write a program in C that draws the flag of Italy in BMP format. GPT-4 is then asked what the output image depicts. If GPT-4's output includes "Italy" or "Italian", then we assume the model got it right. (Carlini acknowledges that this is an imperfect approach, but, again, this benchmark is not meant to be scientifically rigorous.)  </li>
+</ul>
+<h2 id="Task-evaluation">Task evaluation<a class="anchor-link" href="#Task-evaluation">&#182;</a></h2><p>The core component of the benchmark framework is the <code>evaluator.py</code> file, which defines a series of classes and functions that together form a flexible and extensible system for running tests, capturing outputs, and evaluating those outputs against expected results or criteria.</p>
+<div class="highlight"><pre><span></span><span class="n">TestFlagDraw</span> <span class="o">=</span> <span class="s2">&quot;Write a C program that draws an american flag to stdout as a bmp.&quot;</span> <span class="o">&gt;&gt;</span> <span class="n">LLMRun</span><span class="p">()</span> <span class="o">&gt;&gt;</span> \
+       <span class="n">ExtractCode</span><span class="p">()</span> <span class="o">&gt;&gt;</span> <span class="n">CRun</span><span class="p">()</span> <span class="o">&gt;&gt;</span> <span class="n">LLMVisionRun</span><span class="p">(</span><span class="s2">&quot;What flag is shown in this image?&quot;</span><span class="p">)</span> <span class="o">&gt;&gt;</span> \
+          <span class="p">(</span><span class="n">SubstringEvaluator</span><span class="p">(</span><span class="s2">&quot;United States&quot;</span><span class="p">)</span> <span class="o">|</span> \
+           <span class="n">SubstringEvaluator</span><span class="p">(</span><span class="s2">&quot;USA&quot;</span><span class="p">)</span> <span class="o">|</span> \
+           <span class="n">SubstringEvaluator</span><span class="p">(</span><span class="s2">&quot;America&quot;</span><span class="p">))</span>
+</pre></div>
+<p>In this example, the nodes <code>LLMRun()</code>, <code>ExtractCode()</code>, <code>CRun()</code>, <code>LLMVisionRun()</code>, <code>SubstringEvaluator()</code> are each instances of their respective classes. Each class defines a set of functions that implement the desired behavior of the node. The output of a node becomes the input of the next node of the sequence. For nodes that require code execution, a Docker or Podmand container is spun up to safely run the code in a sandbox environment.</p>
+<p>Users can run tests individually or all of them at once. The framework also conveniently includes a script for generating a results matrix in HTML format.</p>
+<h2 id="Supported-LLMs">Supported LLMs<a class="anchor-link" href="#Supported-LLMs">&#182;</a></h2><p>The benchmark is easily extensible, both in terms of adding new tests and new LLMs. As of the time of this writing, it supports the following LLMs:</p>
+<ul>
+<li>Anthropic  </li>
+<li>Cohere  </li>
+<li>Gemini  </li>
+<li>Llama  </li>
+<li>Mistral  </li>
+<li>Moonshot  </li>
+<li>OpenAI  </li>
+<li>VertexAI   </li>
+</ul>
+<p>Additionally, Trelis Research has added <a href="">support for custom models that implement the OpenAI API format</a>. In this notebook, I also demonstrate testing against Mixtral 8x7B Instruct AWQ and OpenChat 3.5.</p>
 
 </div>
 </div>
 </div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h2 id="Install-Dependencies">Install Dependencies<a class="anchor-link" href="#Install-Dependencies">&#182;</a></h2>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[57]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-python"><pre><span></span><span class="c1">## Remove existing benchmark repo from local files</span>
+
+<span class="c1"># import shutil</span>
+<span class="c1"># shutil.rmtree('/content/yet-another-applied-llm-benchmark')</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[45]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-python"><pre><span></span><span class="o">%</span><span class="n">cd</span> <span class="o">/</span><span class="n">content</span>
+<span class="err">!</span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">gadkins</span><span class="o">/</span><span class="n">yet</span><span class="o">-</span><span class="n">another</span><span class="o">-</span><span class="n">applied</span><span class="o">-</span><span class="n">llm</span><span class="o">-</span><span class="n">benchmark</span><span class="o">.</span><span class="n">git</span>
+
+<span class="o">%</span><span class="n">cd</span> <span class="n">yet</span><span class="o">-</span><span class="n">another</span><span class="o">-</span><span class="n">applied</span><span class="o">-</span><span class="n">llm</span><span class="o">-</span><span class="n">benchmark</span>
+<span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">qUr</span> <span class="n">requirements</span><span class="o">.</span><span class="n">txt</span>
+<span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">qUr</span> <span class="n">requirements</span><span class="o">-</span><span class="n">extra</span><span class="o">.</span><span class="n">txt</span>
+<span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">qU</span> <span class="n">python</span><span class="o">-</span><span class="n">dotenv</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>/content
+Cloning into &#39;yet-another-applied-llm-benchmark&#39;...
+remote: Enumerating objects: 12000, done.
+remote: Counting objects: 100% (568/568), done.
+remote: Compressing objects: 100% (185/185), done.
+remote: Total 12000 (delta 391), reused 535 (delta 375), pack-reused 11432
+Receiving objects: 100% (12000/12000), 72.45 MiB | 19.87 MiB/s, done.
+Resolving deltas: 100% (2760/2760), done.
+Updating files: 100% (10736/10736), done.
+/content/yet-another-applied-llm-benchmark
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[46]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-python"><pre><span></span><span class="c1"># Unecessary in Google Colab (but critical on a local machine)</span>
+<span class="err">!</span><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">podman</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+podman is already the newest version (3.4.4+ds1-1ubuntu1.22.04.2).
+The following package was automatically installed and is no longer required:
+  libfuse2
+Use &#39;sudo apt autoremove&#39; to remove it.
+0 upgraded, 0 newly installed, 0 to remove and 39 not upgraded.
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[47]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-python"><pre><span></span><span class="err">!</span><span class="n">which</span> <span class="n">podman</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>/usr/bin/podman
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h1 id="Setup">Setup<a class="anchor-link" href="#Setup">&#182;</a></h1><h2 id="Custom-models">Custom models<a class="anchor-link" href="#Custom-models">&#182;</a></h2><p>In addition to the LLMs defined in the code, you can run this benchmark against your own custom models or just open-source models that are not included in the benchmark.</p>
+<p>For help deploying production-ready model APIs, see the <a href="/notebooks/inference/model-serving">Model Serving notebook</a>.  I also have available some one-click templates to easily deploy the following models on Runpod:</p>
+<ul>
+<li><a href="https://runpod.io/console/gpu-cloud?template=eiyu4ijj0h&amp;ref=n2u8jwou">Mistral 7B Instruct v0.1 AWQ with vLLM</a>  </li>
+<li><a href="https://runpod.io/console/gpu-cloud?template=rgt43as8lb&amp;ref=n2u8jwou">Mixtral 8x7B Instruct AWQ with vLLM</a>  </li>
+<li><a href="https://runpod.io/console/gpu-cloud?template=rgt43as8lb&amp;ref=n2u8jwou">OpenChat 3.5 with TGI</a>  </li>
+</ul>
+<h2 id="Configuration">Configuration<a class="anchor-link" href="#Configuration">&#182;</a></h2><p>Next, we'll create <code>config.json</code> and set up the following:</p>
+<ul>
+<li>Add your OpenAI API key since GPT-4 is used as a partial evaluator in some tasks.  </li>
+<li>For custom models that implement the OpenAI API spec, add the <code>api_key</code> (or empty string if not applicable), API <code>endpoint</code> where the model is hosted, and Hugging Face <code>model_id</code>.  </li>
+</ul>
+
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[48]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-python"><pre><span></span><span class="o">%%</span><span class="n">writefile</span> <span class="n">config</span><span class="o">.</span><span class="n">json</span>
+<span class="p">{</span>
+    <span class="s2">"container"</span><span class="p">:</span> <span class="s2">"podman"</span><span class="p">,</span>
+    <span class="s2">"hparams"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"temperature"</span><span class="p">:</span> <span class="mf">0.7</span>
+    <span class="p">},</span>
+    <span class="s2">"llms"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"Mistral-7B-Instruct-v0.1-AWQ"</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">"api_key"</span><span class="p">:</span> <span class="s2">"EMPTY"</span><span class="p">,</span>
+            <span class="s2">"endpoint"</span><span class="p">:</span> <span class="s2">"https://ymp90vl4mfkt5o-8000.proxy.runpod.net/v1/"</span><span class="p">,</span>
+            <span class="s2">"slug"</span><span class="p">:</span> <span class="s2">"TheBloke/Mistral-7B-Instruct-v0.1-AWQ"</span>
+        <span class="p">},</span>
+        <span class="s2">"Mixtral-Instruct-AWQ"</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">"api_key"</span><span class="p">:</span> <span class="s2">"EMPTY"</span><span class="p">,</span>
+            <span class="s2">"endpoint"</span><span class="p">:</span> <span class="s2">"https://mc1s4jnygce5b5-8000.proxy.runpod.net/v1/"</span><span class="p">,</span>
+            <span class="s2">"slug"</span><span class="p">:</span> <span class="s2">"casperhansen/mixtral-instruct-awq"</span>
+        <span class="p">},</span>
+        <span class="s2">"openchat_3.5"</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">"api_key"</span><span class="p">:</span> <span class="s2">"EMPTY"</span><span class="p">,</span>
+            <span class="s2">"endpoint"</span><span class="p">:</span> <span class="s2">"https://i0vbjq7enev3du-8080.proxy.runpod.net/v1"</span><span class="p">,</span>
+            <span class="s2">"model_id"</span><span class="p">:</span> <span class="s2">"openchat/openchat_3.5"</span>
+        <span class="p">},</span>
+        <span class="s2">"openai"</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">"api_key"</span><span class="p">:</span> <span class="s2">"YOUR_OPENAI_API_KEY"</span>
+        <span class="p">},</span>
+        <span class="s2">"mistral"</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">"api_key"</span><span class="p">:</span> <span class="s2">"TODO"</span>
+        <span class="p">},</span>
+        <span class="s2">"cohere"</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">"api_key"</span><span class="p">:</span> <span class="s2">"TODO"</span>
+        <span class="p">},</span>
+        <span class="s2">"anthropic"</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">"api_key"</span><span class="p">:</span> <span class="s2">"TODO"</span>
+        <span class="p">},</span>
+        <span class="s2">"moonshot"</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">"api_key"</span><span class="p">:</span> <span class="s2">"TODO"</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>Writing config.json
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>For testing purposes, follow these instructions:</p>
+<p>We'll be using "gpt-3.5-turbo" which can be accessed via free accounts.</p>
+<p>In <code>llm.py</code> update the following variables.</p>
+<ol>
+<li>Set <code>llm = LLM("gpt-3.5-turbo")</code> or whatever model you want  </li>
+<li>Set <code>eval_llm = LLM("gpt-3.5-turbo", override_hparams={'temperature': 0.1})</code></li>
+</ol>
+<p>In <code>evaluator.py</code></p>
+<ol>
+<li>Update the variable <code>PYTHON_ENV = "python3.11"</code> to <code>PYTHON_ENV = "python"</code></li>
+</ol>
+<p>In <code>docker_controller.py</code> (if not using <code>podman</code> (or) <code>docker</code>):</p>
+<ol>
+<li>Set <code>I_HAVE_BLIND_FAITH_IN_LLMS_AND_AM_OKAY_WITH_THEM_BRICKING_MY_MACHINE_OR_MAKING_THEM_HALT_AND_CATCH_FIRE</code> to <code>True</code></li>
+</ol>
+<p>If you prefer running it locally:
+ <code>Add the respective Python path in evaluator.py .</code></p>
+<p>These changes will enable you to use "gpt-3.5-turbo" for testing.</p>
+
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h3 id="Basic-test-with-gpt-3.5-turbo">Basic test with gpt-3.5-turbo<a class="anchor-link" href="#Basic-test-with-gpt-3.5-turbo">&#182;</a></h3><p>Let's makes sure one basic test is working on the free <code>gpt-3.5-turbo</code> model.</p>
+
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[54]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-python"><pre><span></span><span class="err">!</span><span class="n">PYTHONPATH</span><span class="o">=</span><span class="s1">'.'</span> <span class="n">python</span> <span class="n">tests</span><span class="o">/</span><span class="n">print_hello</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>gpt-3.5-turbo CACHE MISS [&#39;Write a python program that prints the string &#34;hello world&#34; and tell me how it works in a sentence&#39;]
+gpt-3.5-turbo CACHE MISS [&#39;Take the below answer to my programming question  and return just the complete code in a single file so I can copy and paste it into an editor and directly run it. Include any header and main necessary so I can run it by copying this one file. DO NOT MODIFY THE CODE OR WRITE NEW CODE. Here is the code: \nprint(&#34;hello world&#34;)\n\nThis program uses the print() function in Python to output the string &#34;hello world&#34; to the console when the program is executed.&#39;]
+# Initial Query
+&gt; Write a python program that prints the string &#34;hello world&#34; and tell me how it works in a sentence
+
+# LLM Generation
+
+## Query
+&gt; Write a python program that prints the string &#34;hello world&#34; and tell me how it works in a sentence
+
+## Output
+&gt; print(&#34;hello world&#34;)
+&gt; 
+&gt; This program uses the print() function in Python to output the string &#34;hello world&#34; to the console when the program is executed.
+
+# Extract Code
+I extracted the following code from that output:
+&gt; ```
+&gt; print(&#34;hello world&#34;)
+&gt; ```
+
+# Run Code Interpreter
+Running the following program:
+&gt; ```
+&gt; print(&#34;hello world&#34;)
+&gt; ```
+And got the output:
+```
+hello world
+```
+
+# Substring Evaluation
+Testing if the previous output contains the string `hello world`: True
+
+True
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h3 id="Basic-test-with-a-custom-model">Basic test with a custom model<a class="anchor-link" href="#Basic-test-with-a-custom-model">&#182;</a></h3><p>Now let's try running that same basic test on our custom model (here I'm using my own instance of Mistral-7B-Instruct-v0.1-AWQ on Runpod.io).</p>
+
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[55]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-python"><pre><span></span><span class="err">!</span><span class="n">PYTHONPATH</span><span class="o">=</span><span class="s1">'.'</span> <span class="n">python</span> <span class="n">main</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">model</span> <span class="n">Mistral</span><span class="o">-</span><span class="mi">7</span><span class="n">B</span><span class="o">-</span><span class="n">Instruct</span><span class="o">-</span><span class="n">v0</span><span class="mf">.1</span><span class="o">-</span><span class="n">AWQ</span> <span class="o">--</span><span class="n">test</span> <span class="n">print_hello</span> <span class="o">--</span><span class="n">run</span><span class="o">-</span><span class="n">tests</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>Running Mistral-7B-Instruct-v0.1-AWQ, iteration 0
+Model name: Mistral-7B-Instruct-v0.1-AWQ
+Model ID: None
+API Endpoint: https://ymp90vl4mfkt5o-8000.proxy.runpod.net/v1/
+print_hello.py
+Run Job TestPrintHello
+Test Passes: TestPrintHello
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h3 id="All-tests-with-a-custom-model">All tests with a custom model<a class="anchor-link" href="#All-tests-with-a-custom-model">&#182;</a></h3><p>Awesome! Now let's try running all the tests on our custom model. We'll also generate a report to summarize the results.</p>
+
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[51]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-python"><pre><span></span><span class="err">!</span><span class="n">PYTHONPATH</span><span class="o">=</span><span class="s1">'.'</span> <span class="n">python</span> <span class="n">main</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">model</span> <span class="n">Mistral</span><span class="o">-</span><span class="mi">7</span><span class="n">B</span><span class="o">-</span><span class="n">Instruct</span><span class="o">-</span><span class="n">v0</span><span class="mf">.1</span><span class="o">-</span><span class="n">AWQ</span> <span class="o">--</span><span class="n">run</span><span class="o">-</span><span class="n">tests</span> <span class="o">--</span><span class="n">generate</span><span class="o">-</span><span class="n">report</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>Model name: Mistral-7B-Instruct-v0.1-AWQ
+Model ID: None
+API Endpoint: https://ymp90vl4mfkt5o-8000.proxy.runpod.net/v1/
+Running Mistral-7B-Instruct-v0.1-AWQ, iteration 0
+Model name: Mistral-7B-Instruct-v0.1-AWQ
+Model ID: None
+API Endpoint: https://ymp90vl4mfkt5o-8000.proxy.runpod.net/v1/
+fix_torch_backward.py
+Run Job TestTorchBackwardExplain
+Test Fails: TestTorchBackwardExplain from fix_torch_backward.py
+Run Job TestTorchBackwardFix
+Test Passes: TestTorchBackwardFix
+git_merge.py
+Run Job TestGitMerge
+Test Fails: TestGitMerge from git_merge.py
+Run Job TestGitMergeConflict
+Test Fails: TestGitMergeConflict from git_merge.py
+jax_onehot.py
+Run Job TestJaxOneHot
+Test Fails: TestJaxOneHot from jax_onehot.py
+fix_threading_issue.py
+Run Job TestQuestionThreadedFix
+Test Fails: TestQuestionThreadedFix from fix_threading_issue.py
+jnp_nn_bugfix.py
+Run Job TestFixJnpBug
+Test Fails: TestFixJnpBug from jnp_nn_bugfix.py
+implement_assembly_interpreter.py
+Run Job TestImplementAssembly
+Test Fails: TestImplementAssembly from implement_assembly_interpreter.py
+convert_to_c.py
+Run Job TestProgramRewriteC
+Test Fails: TestProgramRewriteC from convert_to_c.py
+rust_parallel_wordcount.py
+Run Job TestRustParCount
+Test Fails: TestRustParCount from rust_parallel_wordcount.py
+Run Job TestRustParCountNoLib
+Test Fails: TestRustParCountNoLib from rust_parallel_wordcount.py
+print_hello.py
+Run Job TestPrintHello
+Test Passes: TestPrintHello
+baking_help.py
+Run Job TestMissingStep
+Test Fails: TestMissingStep from baking_help.py
+python_chess_game_prefix.py
+Run Job TestPyChessPrefix
+Test Fails: TestPyChessPrefix from python_chess_game_prefix.py
+git_cherrypick.py
+Run Job TestGitCherrypick
+Test Fails: TestGitCherrypick from git_cherrypick.py
+find_bug_in_paper.py
+Run Job TestFindBugPaper
+Test Fails: TestFindBugPaper from find_bug_in_paper.py
+Run Job TestFindBugPaperEasy
+Test Fails: TestFindBugPaperEasy from find_bug_in_paper.py
+explain_code_prime.py
+Run Job TestExplainPrime
+Test Fails: TestExplainPrime from explain_code_prime.py
+merge_into_16.py
+Run Job TestMake16Files
+Test Fails: TestMake16Files from merge_into_16.py
+Run Job TestMake16FilesEasy
+Test Fails: TestMake16FilesEasy from merge_into_16.py
+base64_qanda.py
+Run Job TestBase64Thought
+Test Fails: TestBase64Thought from base64_qanda.py
+what_is_automodel.py
+Run Job TestWhatIsAutoModel
+Test Fails: TestWhatIsAutoModel from what_is_automodel.py
+extract_emails.py
+Run Job TestExtractEmail
+Test Fails: TestExtractEmail from extract_emails.py
+regex_remove_5_words.py
+Run Job TestRegex
+Test Fails: TestRegex from regex_remove_5_words.py
+numpy_advanced_index.py
+Run Job TestNumpyAdvancedIndex
+Test Fails: TestNumpyAdvancedIndex from numpy_advanced_index.py
+Run Job TestNumpyAdvancedIndexEasier
+Test Fails: TestNumpyAdvancedIndexEasier from numpy_advanced_index.py
+fix_tokenizer.py
+Run Job TestSimpleFix
+Test Fails: TestSimpleFix from fix_tokenizer.py
+convert_dp_to_iterative.py
+Run Job TestProgramRemoveDP
+Test Fails: TestProgramRemoveDP from convert_dp_to_iterative.py
+explain_code_prime2.py
+Run Job TestExplainPrime2
+Test Fails: TestExplainPrime2 from explain_code_prime2.py
+what_is_inv.py
+Run Job TestWhatIsInv
+Test Fails: TestWhatIsInv from what_is_inv.py
+strided_trick.py
+Run Job TestProgramStrided
+Test Fails: TestProgramStrided from strided_trick.py
+identify_uuencode.py
+Run Job TestIsUU
+Test Fails: TestIsUU from identify_uuencode.py
+convert_to_c_simple.py
+Run Job TestProgramRewriteCSimple
+Traceback (most recent call last):
+  File &#34;/usr/lib/python3.10/subprocess.py&#34;, line 1154, in communicate
+    stdout, stderr = self._communicate(input, endtime, timeout)
+  File &#34;/usr/lib/python3.10/subprocess.py&#34;, line 2021, in _communicate
+    ready = selector.select(timeout)
+  File &#34;/usr/lib/python3.10/selectors.py&#34;, line 416, in select
+    fd_event_list = self._selector.poll(timeout)
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File &#34;/content/yet-another-applied-llm-benchmark/main.py&#34;, line 196, in &lt;module&gt;
+    main()
+  File &#34;/content/yet-another-applied-llm-benchmark/main.py&#34;, line 179, in main
+    result = run_all_tests(model, use_cache=False,
+  File &#34;/content/yet-another-applied-llm-benchmark/main.py&#34;, line 82, in run_all_tests
+    ok, reason = run_one_test(test, test_llm, llm.eval_llm, llm.vision_eval_llm)
+  File &#34;/content/yet-another-applied-llm-benchmark/main.py&#34;, line 40, in run_one_test
+    for success, output in test():
+  File &#34;/content/yet-another-applied-llm-benchmark/evaluator.py&#34;, line 182, in __call__
+    for output1, response1 in self.node1(orig_output):
+  File &#34;/content/yet-another-applied-llm-benchmark/evaluator.py&#34;, line 183, in __call__
+    for output2, response2 in self.node2(output1):
+  File &#34;/content/yet-another-applied-llm-benchmark/evaluator.py&#34;, line 544, in __call__
+    out = invoke_docker(self.env, {&#34;main.c&#34;: code.encode(),
+  File &#34;/content/yet-another-applied-llm-benchmark/docker_controller.py&#34;, line 240, in invoke_docker
+    proc = subprocess.run(run_cmd, cwd=&#34;/tmp/fakedocker_%d&#34;%env.fake_docker_id, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+  File &#34;/usr/lib/python3.10/subprocess.py&#34;, line 505, in run
+    stdout, stderr = process.communicate(input, timeout=timeout)
+  File &#34;/usr/lib/python3.10/subprocess.py&#34;, line 1165, in communicate
+    self._wait(timeout=sigint_timeout)
+  File &#34;/usr/lib/python3.10/subprocess.py&#34;, line 1953, in _wait
+    time.sleep(delay)
+KeyboardInterrupt
+^C
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[56]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-python"><pre><span></span><span class="err">!</span><span class="n">PYTHONPATH</span><span class="o">=</span><span class="s1">'.'</span> <span class="n">python</span> <span class="n">regenerate_report</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>[dict_keys([&#39;print_hello.py.TestPrintHello&#39;])]
+print_hello.py.TestPrintHello
+BAD {} print_hello.py.TestPrintHello
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h1 id="Visualizing-Results">Visualizing Results<a class="anchor-link" href="#Visualizing-Results">&#182;</a></h1><p>If you pass the <code>--generate-report</code> option to the <code>python main.py</code> command, you can see a summary of the tests results in HTML format. Alternatively, you can run the script <code>generate-report.py</code>, which will run all tests for the default model in <code>llm.py</code> (<code>llm = LLM(...)</code>).</p>
+<p>You can see an example report below.</p>
+
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[5]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-python"><pre><span></span><span class="o">%%</span><span class="n">html</span>
+<span class="o">&lt;</span><span class="n">iframe</span> <span class="n">src</span><span class="o">=</span><span class="s2">"https://nicholas.carlini.com/writing/2024/evaluation_examples/index.html"</span> <span class="n">width</span><span class="o">=</span><span class="s2">"1000"</span> <span class="n">height</span><span class="o">=</span><span class="s2">"1000"</span><span class="o">&gt;&lt;/</span><span class="n">iframe</span><span class="o">&gt;</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output " data-mime-type="text/html">
+<iframe src="https://nicholas.carlini.com/writing/2024/evaluation_examples/index.html" width="1000" height="1000"></iframe>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
 </div>
 </body>
 
