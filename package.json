@@ -6,6 +6,9 @@
     "name": "Grayson Adkins",
     "url": "https://twitter.com/GraysonAdkins"
   },
+  "engines": {
+    "node": "^18.16.0"
+  },
   "scripts": {
     "dev": "concurrently \"contentlayer dev\" \"next dev\"",
     "build": "contentlayer build && next build",
