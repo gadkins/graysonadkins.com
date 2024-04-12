@@ -89,7 +89,7 @@ export default async function IndexPage() {
             Projects
           </h2>
           <p className="max-w-[85%] leading-normal text-muted-foreground sm:text-lg sm:leading-7">
-            Since 2017, I've been the Co-Founder & Head of Product at Uffizzi, a DevOps tooling company
+            Since 2017, I&#39ve been the Co-Founder &#38 Head of Product at Uffizzi, a DevOps tooling company
             specializing in ephemeral cloud environments. Before Uffizzi, I was a machine learning researcher. I
             continue to explore various ML topics through my personal projects.
           </p>
