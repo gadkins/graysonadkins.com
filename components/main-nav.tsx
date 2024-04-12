@@ -102,8 +102,8 @@ export function MainNav({ items, children }: MainNavProps) {
                 <ListItem href="/notebooks/fine-tuning/qlora" title="Fine-tuning">
                   Domain-specific training
                 </ListItem>
-                <ListItem href="/notebooks/rag/embedding-comparison" title="Embeddings & RAG">
-                  Embeddings and advanced RAG
+                <ListItem href="/notebooks/rag/overview" title="Advanced RAG">
+                  Beyond basic retrieval
                 </ListItem>
                 <ListItem href="/notebooks/inference/model-serving" title="Inference & Evaluation">
                   Model serving and optimization
@@ -125,13 +125,13 @@ export function MainNav({ items, children }: MainNavProps) {
               </NavigationMenuLink>
             </Link>
           </NavigationMenuItem>
-          <NavigationMenuItem>
+          {/* <NavigationMenuItem>
             <Link href="/#resume" legacyBehavior passHref>
               <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                 Resume
               </NavigationMenuLink>
             </Link>
-          </NavigationMenuItem>
+          </NavigationMenuItem> */}
         </NavigationMenuList>
       </NavigationMenu>
       {/* {items?.length ? (

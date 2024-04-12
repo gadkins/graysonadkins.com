@@ -201,11 +201,10 @@ export default async function IndexPage() {
         </div>
         <div className="mx-auto text-center md:max-w-[58rem]">
           <p className="leading-normal text-muted-foreground sm:text-lg sm:leading-7">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed neque diam, euismod sit amet.
           </p>
         </div>
       </section>
-      <section id="resume" className="container py-8 md:py-12 lg:py-24">
+      {/* <section id="resume" className="container py-8 md:py-12 lg:py-24">
         <div className="mx-auto flex max-w-[58rem] flex-col items-center justify-center gap-4 text-center">
           <h2 className="font-heading text-3xl leading-[1.1] sm:text-3xl md:text-6xl">
             Resume
@@ -249,7 +248,7 @@ export default async function IndexPage() {
             </Link>
           )}
         </div>
-      </section>
+      </section> */}
     </>
   )
 }

@@ -3,6 +3,8 @@
 import '@/styles/globals.css';
 
 // import Link from "next/link"
+import { GetStaticPaths, GetStaticProps } from 'next';
+import { ParsedUrlQuery } from 'querystring';
 import { useRouter } from "next/router";
 import Link from "next/link"
 import ErrorPage from "next/error";
@@ -18,9 +20,14 @@ import { DocsSidebarNav } from "@/components/sidebar-nav"
 import { notebooksConfig } from "@/config/notebooks"
 import { SiteFooter } from "@/components/site-footer"
 
-import { getNotebookBySlug, getAllNotebooks } from "@/lib/notebooks"
+// import { getNotebookBySlug, getAllNotebooks } from "@/lib/notebooks"
+import { getNotebookSlugs, getNotebookBySlug } from "@/lib/notebooks"
 import NotebookViewer from "@/components/notebook-viewer"
 import type { Notebook } from "types"
+
+interface IParams extends ParsedUrlQuery {
+    slug: string[];
+}
 
 type Props = {
     notebook: Notebook
@@ -110,76 +117,31 @@ export default function NotebooksPage({
     )
 }
 
-// type Params = {
-//     params: {
-//         slug: string;
-//     };
-// };
+export const getStaticPaths: GetStaticPaths = async () => {
+    const paths = getNotebookSlugs().map((slug) => ({
+        params: { slug: slug.split('/') },
+    }));
 
-// export async function getStaticProps({ params }: Params) {
-//     const notebook = getNotebookBySlug(params.slug, [
-//         "slug",
-//         "content",
-//     ]);
+    return {
+        paths,
+        fallback: false,
+    };
+};
 
-//     return {
-//         props: {
-//             notebook: {
-//                 ...notebook,
-//             },
-//         },
-//     };
-// }
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+    const { slug } = params as IParams;
+    const notebook = getNotebookBySlug(slug.join('/'), ['slug', 'content']);
 
-// export async function getStaticPaths() {
-//     const notebooks = getAllNotebooks(["slug"]);
-//     return {
-//         paths: notebooks.map((notebook) => {
-//             return {
-//                 params: {
-//                     slug: [notebook.slug],
-//                 },
-//             };
-//         }),
-//         fallback: false,
-//     };
-// }
+    // If no notebook is found, return a 404 page
+    if (!notebook) {
+        return {
+            notFound: true,
+        };
+    }
 
-// type Params = {
-//     params: {
-//         slug: string;
-//     };
-// };
-
-// export async function getStaticProps({ params }: Params) {
-//     const notebook = getNotebookBySlug(params.slug, [
-//         "title",
-//         "date",
-//         "slug",
-//         "fullPath",
-//     ]);
-
-
-//     return {
-//         props: {
-//             notebook: {
-//                 ...notebook,
-//             },
-//         },
-//     };
-// }
-
-// export async function getStaticPaths() {
-//     const notebooks = getAllNotebooks(["slug"]);
-
-//     return {
-//         paths: notebooks.map((notebook) => {
-//             return {
-//                 params: {
-//                     slug: notebook.slug,
-//                 },
-//             };
-//         }),
-//         fallback: false,
-//     };
-// }
+    return {
+        props: {
+            notebook,
+        },
+    };
+};

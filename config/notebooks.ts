@@ -33,7 +33,7 @@ export const notebooksConfig: NotebooksConfig = {
           href: "/notebooks/data-processing/data-extraction",
         },
         {
-          title: "Synthetic Data",
+          title: "Synthetic Data (Coming Soon)",
           href: "/notebooks/data-preparation/synthetic-data",
           disabled: true,
         }
@@ -52,18 +52,6 @@ export const notebooksConfig: NotebooksConfig = {
 
         },
         {
-          title: "Chat Fine-Tuning",
-          href: "/notebooks/fine-tuning/chat",
-        },
-        {
-          title: "RAG Fine-Tuning",
-          href: "/notebooks/fine-tuning/chat",
-        },
-        {
-          title: "Long Context",
-          href: "/notebooks/fine-tuning/long-context",
-        },
-        {
           title: "DPO (Coming Soon)",
           href: "/notebooks/fine-tuning/dpo",
           disabled: true,
@@ -71,19 +59,23 @@ export const notebooksConfig: NotebooksConfig = {
       ],
     },
     {
-      title: "Embeddings & RAG",
+      title: "Advanced RAG",
       items: [
+        {
+          title: "Overview",
+          href: "/notebooks/rag/overview",
+        },
         {
           title: "Embedding Comparison",
           href: "/notebooks/rag/embedding-comparison",
         },
         {
-          title: "Naive RAG",
-          href: "/notebooks/rag/basic",
+          title: "Sentence Window Retrieval",
+          href: "/notebooks/rag/sentence-window-retrieval",
         },
         {
-          title: "Advanced RAG",
-          href: "/notebooks/rag/advanced",
+          title: "Auto-Merging Retrieval",
+          href: "/notebooks/rag/auto-merging-retrieval",
         },
       ],
     },
@@ -116,21 +108,8 @@ export const notebooksConfig: NotebooksConfig = {
           href: "/notebooks/inference/benchmarking-llms",
         },
         {
-          title: "Function Calling API",
-          href: "/notebooks/inference/function-calling-api",
-        },
-        {
-          title: "Speculative Decoding",
+          title: "Speculative Decoding (Coming Soon)",
           href: "/notebooks/inference/speculative-decoding",
-        },
-        {
-          title: "Running LLMs Locally",
-          href: "/notebooks/inference/model-serving",
-          disabled: true,
-        },
-        {
-          title: "Serverless Inference",
-          href: "/notebooks/inference/serverless",
           disabled: true,
         },
       ],
