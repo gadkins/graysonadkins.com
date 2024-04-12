@@ -7,8 +7,6 @@ import { cn } from "@/lib/utils"
 import utilStyles from './utils.module.scss'
 import { buttonVariants } from "@/components/ui/button"
 
-import { Braces } from 'lucide-react';
-
 async function getGitHubStars(): Promise<string | null> {
   try {
     const response = await fetch(
