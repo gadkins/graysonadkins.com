@@ -130,7 +130,7 @@ export default async function IndexPage() {
             </div>
           </Link>
           <Link
-            href="/notebooks/data-extraction"
+            href="/notebooks/data-processing/data-extraction"
             rel="noreferrer"
             className="relative overflow-hidden rounded-lg border bg-background p-2 hover:bg-accent hover:text-accent-foreground"
           >
