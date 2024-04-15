@@ -147,7 +147,7 @@ export default async function IndexPage() {
             </div>
           </Link>
           <Link
-            href="/notebooks/rag/advanced"
+            href="/notebooks/rag/overview"
             rel="noreferrer"
             className="relative overflow-hidden rounded-lg border bg-background p-2 hover:bg-accent hover:text-accent-foreground"
           >
@@ -163,7 +163,7 @@ export default async function IndexPage() {
             </div>
           </Link>
           <Link
-            href="/notebooks/bechmarking"
+            href="/notebooks/inference/practical-bechmarking-for-llms"
             rel="noreferrer"
             className="relative overflow-hidden rounded-lg border bg-background p-2 hover:bg-accent hover:text-accent-foreground"
           >

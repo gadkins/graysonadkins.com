@@ -5,7 +5,7 @@ import { ogImageSchema } from "@/lib/validations/og"
 export const runtime = "edge"
 
 const interRegular = fetch(
-  new URL("../../../assets/fonts/Inter-Regular.ttf", import.meta.url)
+  new URL("../../../assets/fonts/Inter-Regular.woff2", import.meta.url)
 ).then((res) => res.arrayBuffer())
 
 const interBold = fetch(

@@ -105,7 +105,7 @@ export const notebooksConfig: NotebooksConfig = {
         },
         {
           title: "Benchmarking LLMs",
-          href: "/notebooks/inference/benchmarking-llms",
+          href: "/notebooks/inference/practical-benchmarking-for-llms",
         },
         {
           title: "Speculative Decoding (Coming Soon)",
