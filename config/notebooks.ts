@@ -16,8 +16,8 @@ export const notebooksConfig: NotebooksConfig = {
       title: "Introduction",
       items: [
         {
-          title: "Overview",
-          href: "/notebooks/overview",
+          title: "About",
+          href: "/notebooks/about",
         },
       ],
     },
