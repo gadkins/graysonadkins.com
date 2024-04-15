@@ -156,12 +156,21 @@ interface MdxProps {
   code: string
 }
 
+// export function Mdx({ code }: MdxProps) {
+//   const Component = useMDXComponent(code)
+
+//   return (
+//     <div className="mdx">
+//       <Component components={components} />
+//     </div>
+//   )
+// }
 export function Mdx({ code }: MdxProps) {
-  const Component = useMDXComponent(code)
+  const Component = useMDXComponent(code) as any; // Asserting to `any` to bypass the type error
 
   return (
     <div className="mdx">
       <Component components={components} />
     </div>
-  )
+  );
 }
