@@ -91,7 +91,7 @@ export function MainNav({ items, children }: MainNavProps) {
                         Notebooks
                       </div>
                       <p className="text-sm leading-tight text-muted-foreground">
-                        A collection of machine learning notebooks for various tasks.
+                        My collection of Jupyter notebooks for various ML tasks.
                       </p>
                     </a>
                   </NavigationMenuLink>
