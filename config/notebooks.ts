@@ -31,11 +31,6 @@ export const notebooksConfig: NotebooksConfig = {
         {
           title: "Data Extraction",
           href: "/notebooks/data-processing/data-extraction",
-        },
-        {
-          title: "Synthetic Data (Coming Soon)",
-          href: "/notebooks/data-preparation/synthetic-data",
-          disabled: true,
         }
       ],
     },
@@ -51,11 +46,11 @@ export const notebooksConfig: NotebooksConfig = {
           href: "/notebooks/fine-tuning/function-calling",
 
         },
-        {
-          title: "DPO (Coming Soon)",
-          href: "/notebooks/fine-tuning/dpo",
-          disabled: true,
-        },
+        // {
+        //   title: "DPO (Coming Soon)",
+        //   href: "/notebooks/fine-tuning/dpo",
+        //   disabled: true,
+        // },
       ],
     },
     {
@@ -76,6 +71,11 @@ export const notebooksConfig: NotebooksConfig = {
         {
           title: "Auto-Merging Retrieval",
           href: "/notebooks/rag/auto-merging-retrieval",
+        },
+        {
+          title: "Query Expansion (Coming Soon)",
+          href: "/notebooks/rag/query-expansion",
+          disabled: true,
         },
       ],
     },
@@ -107,10 +107,24 @@ export const notebooksConfig: NotebooksConfig = {
           title: "Benchmarking LLMs",
           href: "/notebooks/inference/practical-benchmarking-for-llms",
         },
+        // {
+        //   title: "Speculative Decoding (Coming Soon)",
+        //   href: "/notebooks/inference/speculative-decoding",
+        //   disabled: true,
+        // },
+      ],
+    },
+    {
+      title: "Saftey & Security",
+      items: [
         {
-          title: "Speculative Decoding (Coming Soon)",
-          href: "/notebooks/inference/speculative-decoding",
-          disabled: true,
+          title: "Content Moderation",
+          href: "/notebooks/safety/content-moderation",
+        },
+        {
+          title: "PII Detection",
+          href: "/notebooks/safety/pii-detection",
+
         },
       ],
     },

@@ -80,7 +80,7 @@ export function MainNav({ items, children }: MainNavProps) {
             <NavigationMenuTrigger><Link href="/notebooks/about" >Notebooks</Link></NavigationMenuTrigger>
             <NavigationMenuContent>
               <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
-                <li className="row-span-4">
+                <li className="row-span-5">
                   <NavigationMenuLink asChild>
                     <a
                       className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
@@ -107,6 +107,9 @@ export function MainNav({ items, children }: MainNavProps) {
                 </ListItem>
                 <ListItem href="/notebooks/inference/model-serving" title="Inference & Evaluation">
                   Model serving and optimization
+                </ListItem>
+                <ListItem href="/notebooks/safety/content-moderation" title="Safety & Security">
+                  Content moderation and filtering
                 </ListItem>
               </ul>
             </NavigationMenuContent>
