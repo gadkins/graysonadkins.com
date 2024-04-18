@@ -54,7 +54,7 @@ export default async function IndexPage() {
             className="rounded-2xl bg-muted px-4 py-1.5 text-sm font-medium"
             target="_blank"
           >
-            👋🏻 Hi! I'm Grayson.
+            👋🏻 Hi! I&#39;m Grayson.
           </Link>
           <h1 className="font-heading text-3xl sm:text-5xl md:text-6xl lg:text-7xl">
             Design. Build. Deliver.
@@ -87,8 +87,8 @@ export default async function IndexPage() {
             Projects
           </h2>
           <p className="max-w-[85%] leading-normal text-muted-foreground sm:text-lg sm:leading-7">
-            I&#39;m a freelance AI consultant, developer, and entrepreneur with <strong>10 years
-              experience</strong> building AI and cloud products. In addition to helping teams craft
+            I&#39;m an AI consultant, developer, and entrepreneur with <strong>10 years
+              experience</strong> building AI and cloud services. In addition to helping teams craft
             their AI strategies, I lead product development at Uffizzi, a company I co-founded to
             provide ephemeral cloud environments to software developers.
           </p>
