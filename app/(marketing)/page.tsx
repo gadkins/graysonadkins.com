@@ -54,10 +54,10 @@ export default async function IndexPage() {
             className="rounded-2xl bg-muted px-4 py-1.5 text-sm font-medium"
             target="_blank"
           >
-            👋🏻 Follow me on X.
+            👋🏻 Hi! I'm Grayson.
           </Link>
           <h1 className="font-heading text-3xl sm:text-5xl md:text-6xl lg:text-7xl">
-            Grayson Adkins
+            Design. Build. Deliver.
           </h1>
           <p className="max-w-[42rem] leading-normal text-muted-foreground sm:text-xl sm:leading-8">
             I work at the intersection of AI, cloud, and product design.
@@ -67,12 +67,12 @@ export default async function IndexPage() {
               Explore my work
             </Link>
             <Link
-              href={siteConfig.links.github}
+              href={siteConfig.links.upwork}
               target="_blank"
               rel="noreferrer"
               className={cn(buttonVariants({ variant: "outline", size: "lg" }))}
             >
-              Send me a message
+              Get a quote
             </Link>
           </div>
         </div>
@@ -87,9 +87,10 @@ export default async function IndexPage() {
             Projects
           </h2>
           <p className="max-w-[85%] leading-normal text-muted-foreground sm:text-lg sm:leading-7">
-            Since 2017, I&#39;ve been the Co-Founder &#38; Head of Product at Uffizzi, a DevOps tooling company
-            specializing in ephemeral cloud environments. Before Uffizzi, I was a machine learning researcher. I
-            continue to explore various ML topics through my personal projects.
+            I&#39;m a freelance AI consultant, developer, and entrepreneur with <strong>10 years
+              experience</strong> building AI and cloud products. In addition to helping teams craft
+            their AI strategies, I lead product development at Uffizzi, a company I co-founded to
+            provide ephemeral cloud environments to software developers.
           </p>
         </div>
         <div className="mx-auto grid justify-center gap-4 sm:grid-cols-2 md:max-w-[64rem] md:grid-cols-3">

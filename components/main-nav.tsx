@@ -108,16 +108,23 @@ export function MainNav({ items, children }: MainNavProps) {
                 <ListItem href="/notebooks/inference/model-serving" title="Inference & Evaluation">
                   Model serving and optimization
                 </ListItem>
-                <ListItem href="/notebooks/safety/content-moderation" title="Safety & Security">
+                <ListItem href="/notebooks/safety/content-moderation" title="Safety &">
                   Content moderation and filtering
                 </ListItem>
               </ul>
             </NavigationMenuContent>
           </NavigationMenuItem>
-          <NavigationMenuItem>
+          {/* <NavigationMenuItem>
             <Link href="/handbook" legacyBehavior passHref>
               <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                 AI Handbook
+              </NavigationMenuLink>
+            </Link>
+          </NavigationMenuItem> */}
+          <NavigationMenuItem>
+            <Link href="https://search.graysonadkins.com" legacyBehavior passHref>
+              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                AI Search
               </NavigationMenuLink>
             </Link>
           </NavigationMenuItem>

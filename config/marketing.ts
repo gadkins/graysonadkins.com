@@ -11,8 +11,8 @@ export const marketingConfig: MarketingConfig = {
       href: "/pricing",
     },
     {
-      title: "AI Handbook",
-      href: "/docs",
+      title: "AI Search",
+      href: "https://search.graysonadkins.com",
     },
     {
       title: "Blog",
