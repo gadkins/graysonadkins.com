@@ -108,7 +108,7 @@ export function MainNav({ items, children }: MainNavProps) {
                 <ListItem href="/notebooks/inference/model-serving" title="Inference & Evaluation">
                   Model serving and optimization
                 </ListItem>
-                <ListItem href="/notebooks/safety/content-moderation" title="Safety &">
+                <ListItem href="/notebooks/safety/content-moderation" title="Safety & Security">
                   Content moderation and filtering
                 </ListItem>
               </ul>
