@@ -15302,15 +15302,18 @@ and the rebirth of the landscape.[...]</code></pre>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>In this section, we'll use the open-source inference toolkit TGI to serve our model. TGI implements several advanced features to improve inference speed and make our API production ready. In fact, Hugging Face uses TGI to serve several of their own production APIs.</p>
-<h2 id="About">About<a class="anchor-link" href="#About">&#182;</a></h2><p>TGI is a toolkit from Hugging Face that simplifies creating production-ready inference APIs for any public or private models available on Hugging Face or from a local repository. It implements a bunch of features, notably:
-Quantization (bitsandbytes, EETQ, AWQ, GPT-Q)
-Token streaming
-Continuous batching (to increase total throughout)
-Tensor parallelism (for fast, multi-GPU inference)
-Optimizers (flash attention, paged attention)
-Distributed tracing (with Open Telemetry, Prometheus)
-Speculative decoding (to improve tokens generation speed)</p>
+<p>In this section, we'll use the open-source inference toolkit vLLM to serve our model. </p>
+<h2 id="About">About<a class="anchor-link" href="#About">&#182;</a></h2><p>Like TGI, vLLM implements several advanced features to improve inference speed and make our API production ready:</p>
+<ul>
+<li>Seamless integration with popular HuggingFace models</li>
+<li>High-throughput serving with various decoding algorithms, including parallel sampling, beam search, and more</li>
+<li>Tensor parallelism support for distributed inference</li>
+<li>Streaming outputs</li>
+<li>OpenAI-compatible API server</li>
+<li>Support NVIDIA GPUs and AMD GPUs</li>
+<li>(Experimental) Prefix caching support</li>
+<li>(Experimental) Multi-lora support</li>
+</ul>
 <h2 id="Setup">Setup<a class="anchor-link" href="#Setup">&#182;</a></h2><p>This is what we're going to deploy:
   <p><strong>Model</strong>: Mixtral 8x7b Instruct<br>
     <strong>Quantization</strong>: AWQ<br>
