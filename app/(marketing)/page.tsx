@@ -164,7 +164,7 @@ export default async function IndexPage() {
             </div>
           </Link>
           <Link
-            href="/notebooks/inference/practical-bechmarking-for-llms"
+            href="/notebooks/inference/practical-benchmarking-for-llms"
             rel="noreferrer"
             className="relative overflow-hidden rounded-lg border bg-background p-2 hover:bg-accent hover:text-accent-foreground"
           >
