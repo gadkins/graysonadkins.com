@@ -109,7 +109,7 @@ export const notebooksConfig: NotebooksConfig = {
         },
         {
           title: "Automated Evals",
-          href: "/notebooks/evals/automated-evals",
+          href: "/notebooks/evals/prompt-engineering-automated-evals",
         },
         // {
         //   title: "Speculative Decoding (Coming Soon)",
