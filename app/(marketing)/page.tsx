@@ -113,6 +113,47 @@ export default async function IndexPage() {
             </div>
           </Link>
           <Link
+            href="https://search.graysonadkins.com"
+            target="_blank"
+            rel="noreferrer"
+            className="relative overflow-hidden rounded-lg border bg-background p-2 hover:bg-accent hover:text-accent-foreground"
+          >
+            <div className="flex h-[180px] flex-col justify-between rounded-md p-6">
+              <svg viewBox="0 0 24 24" className="h-12 w-12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 6H3" /><path d="M10 12H3" /><path d="M10 18H3" /><circle cx="17" cy="15" r="3" /><path d="m21 19-1.9-1.9" />
+              </svg>
+              <div className="space-y-2">
+                <h3 className="font-bold">AI-Powered Web Search</h3>
+                <p className="text-sm text-muted-foreground">
+                  Search the web with AI. It's like ChatGPT+Google.
+                </p>
+              </div>
+            </div>
+          </Link>
+          {/* <Link
+            href="https://chat.graysonadkins.com"
+            target="_blank"
+            rel="noreferrer"
+            className="relative overflow-hidden rounded-lg border bg-background p-2 hover:bg-accent hover:text-accent-foreground"
+          >
+            <div className="flex h-[180px] flex-col justify-between rounded-md p-6">
+              <svg viewBox="0 0 24 24" className="h-12 w-12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 6V2H8" />
+                <path d="m8 18-4 4V8a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2Z" />
+                <path d="M2 12h2" />
+                <path d="M9 11v2" />
+                <path d="M15 11v2" />
+                <path d="M20 12h2" />
+              </svg>
+              <div className="space-y-2">
+                <h3 className="font-bold">Chatbot (ChatGPT Clone)</h3>
+                <p className="text-sm text-muted-foreground">
+                  Build your own ChatGPT. Works with OpenAI, Claude, custom models, etc.
+                </p>
+              </div>
+            </div>
+          </Link> */}
+          <Link
             href="/notebooks/fine-tuning/function-calling"
             rel="noreferrer"
             className="relative overflow-hidden rounded-lg border bg-background p-2 hover:bg-accent hover:text-accent-foreground"
@@ -124,7 +165,7 @@ export default async function IndexPage() {
               </svg>
               <div className="space-y-2">
                 <h3 className="font-bold">Advanced Fine-Tuning</h3>
-                <p className="text-sm">
+                <p className="text-sm text-muted-foreground">
                   The latest techniques for fine-tuning LLMs for function calling and more.
                 </p>
               </div>
@@ -136,8 +177,12 @@ export default async function IndexPage() {
             className="relative overflow-hidden rounded-lg border bg-background p-2 hover:bg-accent hover:text-accent-foreground"
           >
             <div className="flex h-[180px] flex-col justify-between rounded-md p-6">
+
               <svg viewBox="0 0 24 24" className="h-12 w-12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 6H3" /><path d="M10 12H3" /><path d="M10 18H3" /><circle cx="17" cy="15" r="3" /><path d="m21 19-1.9-1.9" />
+                <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
+                <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+                <path d="M10 12a1 1 0 0 0-1 1v1a1 1 0 0 1-1 1 1 1 0 0 1 1 1v1a1 1 0 0 0 1 1" />
+                <path d="M14 18a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1 1 1 0 0 1-1-1v-1a1 1 0 0 0-1-1" />
               </svg>
               <div className="space-y-2">
                 <h3 className="font-bold">Data Extraction</h3>
@@ -193,6 +238,26 @@ export default async function IndexPage() {
                 <h3 className="font-bold">Model Serving</h3>
                 <p className="text-sm text-muted-foreground">
                   Serving custom models and measuring inference performance.
+                </p>
+              </div>
+            </div>
+          </Link>
+          <Link
+            href="/notebooks/safety/content-moderation"
+            target="_blank"
+            rel="noreferrer"
+            className="relative overflow-hidden rounded-lg border bg-background p-2 hover:bg-accent hover:text-accent-foreground"
+          >
+            <div className="flex h-[180px] flex-col justify-between rounded-md p-6">
+              <svg viewBox="0 0 24 24" className="h-12 w-12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" />
+                <path d="M12 8v4" />
+                <path d="M12 16h.01" />
+              </svg>
+              <div className="space-y-2">
+                <h3 className="font-bold">Content Moderation</h3>
+                <p className="text-sm text-muted-foreground">
+                  Detect harmful content and moderate generative AI responses.
                 </p>
               </div>
             </div>

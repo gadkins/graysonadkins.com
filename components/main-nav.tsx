@@ -122,9 +122,9 @@ export function MainNav({ items, children }: MainNavProps) {
             </Link>
           </NavigationMenuItem> */}
           <NavigationMenuItem>
-            <Link href="https://search.graysonadkins.com" legacyBehavior passHref>
+            <Link href="/designs" legacyBehavior passHref>
               <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                AI Search
+                Product Design
               </NavigationMenuLink>
             </Link>
           </NavigationMenuItem>

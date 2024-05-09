@@ -129,6 +129,34 @@ export const Notebook = defineDocumentType(() => ({
   computedFields,
 }))
 
+export const Design = defineDocumentType(() => ({
+  name: "Design",
+  filePathPattern: `designs/**/*.mdx`,
+  contentType: "mdx",
+  fields: {
+    title: {
+      type: "string",
+      required: true,
+    },
+    description: {
+      type: "string",
+    },
+    date: {
+      type: "date",
+      required: true,
+    },
+    published: {
+      type: "boolean",
+      default: true,
+    },
+    featured: {
+      type: "boolean",
+      default: false,
+    },
+  },
+  computedFields,
+}))
+
 export const Author = defineDocumentType(() => ({
   name: "Author",
   filePathPattern: `authors/**/*.mdx`,
@@ -171,7 +199,7 @@ export const Page = defineDocumentType(() => ({
 
 export default makeSource({
   contentDirPath: "./content",
-  documentTypes: [Page, Doc, Guide, Post, Notebook, Author],
+  documentTypes: [Page, Doc, Guide, Post, Notebook, Design, Author],
   mdx: {
     remarkPlugins: [remarkGfm],
     rehypePlugins: [
