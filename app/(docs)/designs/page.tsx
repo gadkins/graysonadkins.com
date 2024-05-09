@@ -21,7 +21,7 @@ export default function DesignsPage() {
   return (
     <div className="py-6 lg:py-10">
       <DocsPageHeader
-        heading="Designs"
+        heading="Product Design"
         text="This section includes UI/UX, product, and marketing designs I've done for various projects."
       />
       {designs?.length ? (
