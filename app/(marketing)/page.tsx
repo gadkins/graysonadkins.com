@@ -125,7 +125,7 @@ export default async function IndexPage() {
               <div className="space-y-2">
                 <h3 className="font-bold">AI-Powered Web Search</h3>
                 <p className="text-sm text-muted-foreground">
-                  Search the web with AI. It's like ChatGPT+Google.
+                  Search the web with AI. It&apos;s like ChatGPT+Google.
                 </p>
               </div>
             </div>
