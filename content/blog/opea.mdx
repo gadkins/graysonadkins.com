@@ -1,0 +1,68 @@
+---
+title: What is the Open Platform for Enterprise AI (OPEA)?
+description: The Linux Foundation announces OPEA to create open standards in Generative AI for the enterprise.
+image: /images/blog/opea.png
+date: "2024-05-16"
+authors:
+  - grayson
+---
+
+The Linux Foundation announced last month the creation of the [Open Platform for Enterprise AI (OPEA)](https://opea.dev), which aims to support open source innovation in the AI and data domains. Specifically, the project hopes to establish open standards and modular, resuable components for Generative AI applications that meet the scalibility, reliability, and security requirements of enterprise businesses. The project members consist of a mix of industry leaders across AI, database vendors, and cloud providers, including Hugging Face, Anyscale, Zilliz, Qdrant, Cloudera, Intel, Red Hat, VMWare, and more.
+
+## Design Goals
+
+The OPEA highlights seven design goals for the project, which include:
+
+### 1. Efficient
+
+OPEA aims to address several key problems through its design goals. First, efficiency is a primary concern, as enterprises often struggle with the underutilization of existing infrastructure and hardware. Many AI solutions are optimized for specific hardware, leading to inefficiencies. OPEA aims to harness existing infrastructure and support a variety of AI accelerators and hardware, maximizing resource utilization and cost efficiency.
+
+### 2. Seamless
+
+Seamless integration is essential for enterprise software, yet it can be complex and unstable, particularly in heterogeneous environments with diverse systems and networks. OPEA strives to ensure stability and support across different systems and networks, facilitating seamless integration with enterprise software.
+
+### 3. Open
+
+Openness is crucial to avoid proprietary constraints that can limit innovation and flexibility for enterprises. By leveraging the best open source innovations, OPEA's aim is to prevent vendor lock-in and encourage a flexible and innovative environment.
+
+### 4. Ubiquitous
+
+The ubiquity of AI solutions is often restricted to specific deployment environments such as cloud or on-premises data centers. OPEA is designed with a flexible architecture that supports deployments across cloud, data center, edge, and PC, ensuring that enterprises can deploy AI solutions wherever needed.
+
+### 5. Trusted
+
+Trustworthiness in AI pipelines and tools is a significant concern for enterprises, who require secure, transparent, and traceable solutions. OPEA addresses this by including features that secure the AI pipeline and provide tools to ensure responsibility, transparency, and traceability.
+
+### 6. Scalabale
+
+Lastly, scalability remains a challenge without access to a broad ecosystem of partners and resources. OPEA provides access to a vibrant ecosystem of partners, aiding in the building and scaling of AI solutions to meet enterprise needs. By addressing these problems, OPEA aims to create a comprehensive, open-source platform that supports the development and deployment of advanced, efficient, and scalable AI solutions for enterprises.
+
+## OPEA Platform
+
+In its current form, the OPEA platform consistes of four core components:  
+
+### GenAIComps
+
+[GenAIComps](https://github.com/opea-project/GenAIComps) is a framework of composable building blocks for state-of-the-art generative AI systems including LLMs, data stores, and prompt engines. Given the Linux Foundation's association with the Cloud-Native Computing Foundation (CNCF), it's no surprise that these components are designed as microservices that can be orchestrated and scaled using Kubernetes. GenAIComps abstracts the infrastructure away and leverages existing cloud-native technologies to provide a scalable and reliable platform for generative AI applications in the enterprise.
+
+## GenAIInfra
+
+[GenAIInfra](https://github.com/opea-project/GenAIInfra) is a collection of scripts, Helm Charts, Kubernetes manifests and add-ons to deploy GenAIExamples in a cloud-native way.
+
+### GenAIExamples   
+
+[GenAIExamples](https://github.com/opea-project/GenAIExamples) is a set of architectural blueprints for retrieval-augmented generative AI component stack structure and end-to-end workflows. Some examples include: [chatbots](https://github.com/opea-project/GenAIExamples/blob/main/ChatQnA/README.md), [code generation](https://github.com/opea-project/GenAIExamples/blob/main/CodeGen/README.md), [code translation](https://github.com/opea-project/GenAIExamples/blob/main/CodeTrans/README.md), [document summarization](https://github.com/opea-project/GenAIExamples/blob/main/DocSum/README.md), [language translation](https://github.com/opea-project/GenAIExamples/blob/main/Translation/README.md), [generative search](https://github.com/opea-project/GenAIExamples/blob/main/SearchQnA/README.md), and [visual Q&A](https://github.com/opea-project/GenAIExamples/blob/main/VisualQnA/README.md).
+
+### GenAIEval
+
+[GenAIEval](https://github.com/opea-project/GenAIEval) is a four-step assessment to grade systems on performance, features, trustworthiness and enterprise-grade readiness. In it's current form, this evaluation framework is a simple wrapper around two other evaluation frameworks: [lm-evaluation-harness](https://github.com/EleutherAI/lm-evaluation-harness/) from EleutherAI and [bigcode-evaluation-harness](https://github.com/bigcode-project/bigcode-evaluation-harness) from the BigCode Project. These frameworks facilitate the scoring of language or coding models, respectively, on popular academic and industry benchmarks such as hellaSWAG, MMLU, HumanEval, etc. They also simplify scalable testing across multiple accelerators (e.g. GPUs, TPUs, etc.).
+
+## Will OPEA be successful?
+
+My takeaway, having read the press release, browsed the OPEA website, and reviewed the project repositories, is that the OPEA project is nascent, but promising initiative that could significantly impact the enterprise AI landscape. 
+
+On its face, there's not a lot of innovation in the OPEA core components themselves. The GenAIComps, GenAIInfra, GenAIExamples, and GenAIEval repositories are mostly collections of existing tools, scripts, manifests, and benchmarks borrowed from other projects. There is also a noticable Intel bias in the project—most of the contributors are Intel employees and nearly all of the examples use Intel's Gaudi AI Accelerator. For this project to be impactful outside Intel's limited ecosystem, OPEA will need to broaden its contributors and support for other hardware accelerators, notably NVIDIA GPUs and Google TPUs.
+
+However, the value of OPEA lies in its ability to bring these components together into a cohesive platform that addresses the unique challenges faced by enterprises in deploying AI solutions. By establishing open standards and modular, reusable components for Generative AI applications, OPEA can potentially address key challenges faced by enterprises in deploying AI solutions. The project's design goals and core components are well-aligned with the needs of enterprise businesses, and the involvement of industry leaders across AI, database vendors, and cloud providers bodes well for its success. I look forward to seeing how the OPEA project evolves and the impact it has on the enterprise AI ecosystem. 
+
+
