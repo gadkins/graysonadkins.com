@@ -25,12 +25,16 @@ export const notebooksConfig: NotebooksConfig = {
       title: "Data Processing",
       items: [
         {
-          title: "Utility Functions",
-          href: "/notebooks/data-processing/utility-functions",
+          title: "Call Summarization",
+          href: "/notebooks/data-processing/call-summarization",
         },
         {
           title: "Data Extraction",
           href: "/notebooks/data-processing/data-extraction",
+        },
+        {
+          title: "Utility Functions",
+          href: "/notebooks/data-processing/utility-functions",
         }
       ],
     },
