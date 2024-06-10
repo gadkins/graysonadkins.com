@@ -26,7 +26,7 @@ export const notebooksConfig: NotebooksConfig = {
       items: [
         {
           title: "Call Summarization",
-          href: "/notebooks/data-processing/call-summarization",
+          href: "/notebooks/data-processing/call-summarization-pipeline-aws",
         },
         {
           title: "Data Extraction",

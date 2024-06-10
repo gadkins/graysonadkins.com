@@ -96,7 +96,7 @@ export function MainNav({ items, children }: MainNavProps) {
                     </a>
                   </NavigationMenuLink>
                 </li>
-                <ListItem href="/notebooks/data-processing/call-summarization" title="Data Processing">
+                <ListItem href="/notebooks/data-processing/call-summarization-pipeline-aws" title="Data Processing">
                   Data pipelines and synthesis
                 </ListItem>
                 <ListItem href="/notebooks/fine-tuning/qlora" title="Fine-tuning">
