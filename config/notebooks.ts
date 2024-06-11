@@ -48,8 +48,11 @@ export const notebooksConfig: NotebooksConfig = {
         {
           title: "Function Calling",
           href: "/notebooks/fine-tuning/function-calling",
-
         },
+        {
+          title: "Multi-Modal (Vision Captioning)",
+          href: "/notebooks/fine-tuning/multi-modal-visual-captioning"
+        }
         // {
         //   title: "DPO (Coming Soon)",
         //   href: "/notebooks/fine-tuning/dpo",
