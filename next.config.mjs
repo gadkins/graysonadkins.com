@@ -1,5 +1,3 @@
-// const { withContentlayer } = require('next-contentlayer');
-import { withContentlayer } from 'next-contentlayer';
 import remarkGfm from 'remark-gfm'
 import createMDX from '@next/mdx'
 
@@ -17,7 +15,6 @@ const nextConfig = {
   },
 }
 
-// export default withContentlayer(nextConfig)
 
 const withMDX = createMDX({
   // Add markdown plugins here, as desired
