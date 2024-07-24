@@ -7,7 +7,7 @@
     "url": "https://twitter.com/GraysonAdkins"
   },
   "engines": {
-    "node": "^18.16.0"
+    "node": "^20.x"
   },
   "scripts": {
     "dev": "concurrently \"contentlayer dev\" \"next dev\"",
