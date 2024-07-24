@@ -174,7 +174,7 @@ dependencies:
     specifier: ^8.0.1
     version: 8.2.2
   contentlayer:
-    specifier: ^0.3.1
+    specifier: ^0.3.4
     version: 0.3.4(esbuild@0.23.0)(markdown-wasm@1.2.0)
   date-fns:
     specifier: ^2.29.3
@@ -195,7 +195,7 @@ dependencies:
     specifier: 4.22.1
     version: 4.22.1(next@14.0.5-canary.35)(nodemailer@6.9.14)(react-dom@18.3.1)(react@18.3.1)
   next-contentlayer:
-    specifier: ^0.3.1
+    specifier: ^0.3.4
     version: 0.3.4(contentlayer@0.3.4)(esbuild@0.23.0)(markdown-wasm@1.2.0)(next@14.0.5-canary.35)(react-dom@18.3.1)(react@18.3.1)
   next-mdx-remote:
     specifier: ^4.4.1
