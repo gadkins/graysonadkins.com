@@ -80,10 +80,10 @@ export function MainNav({ items, children }: MainNavProps) {
             <NavigationMenuTrigger><Link href="/notebooks/about" >Notebooks</Link></NavigationMenuTrigger>
             <NavigationMenuContent>
               <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
-                <li className="row-span-5">
+                <li className="row-span-6">
                   <NavigationMenuLink asChild>
                     <a
-                      className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
+                      className="flex h-full w-full select-none flex-col justify-start rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
                       href="/notebooks/about"
                     >
                       <Icons.jupyter className="h-6 w-6" />
@@ -91,7 +91,7 @@ export function MainNav({ items, children }: MainNavProps) {
                         Notebooks
                       </div>
                       <p className="text-sm leading-tight text-muted-foreground">
-                        My collection of Jupyter notebooks for various ML tasks.
+                        My collection of Jupyter notebooks for various AI Engineering tasks.
                       </p>
                     </a>
                   </NavigationMenuLink>
@@ -101,6 +101,9 @@ export function MainNav({ items, children }: MainNavProps) {
                 </ListItem>
                 <ListItem href="/notebooks/fine-tuning/qlora" title="Fine-tuning">
                   Domain-specific training
+                </ListItem>
+                <ListItem href="/notebooks/agents/multi-agent-ai-systems-with-crewai" title="Agents">
+                  Multi-agent AI workflows
                 </ListItem>
                 <ListItem href="/notebooks/rag/overview" title="Advanced RAG">
                   Beyond basic retrieval

@@ -61,6 +61,15 @@ export const notebooksConfig: NotebooksConfig = {
       ],
     },
     {
+      title: "Agents",
+      items: [
+        {
+          title: "Multi-Agent Systems",
+          href: "/notebooks/agents/multi-agent-ai-systems-with-crewai",
+        }
+      ],
+    },
+    {
       title: "Advanced RAG",
       items: [
         {
