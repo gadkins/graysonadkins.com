@@ -5,7 +5,7 @@ import { siteConfig } from "@/config/site"
 import { cn } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/button"
 import { MainNav } from "@/components/main-nav"
-import { CommandMenu } from "@/components/command-menu"
+// import { CommandMenu } from "@/components/command-menu"
 import { Icons } from "@/components/icons"
 import { SiteFooter } from "@/components/site-footer"
 

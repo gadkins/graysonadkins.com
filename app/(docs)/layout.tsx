@@ -5,7 +5,7 @@ import { siteConfig } from "@/config/site"
 import { Icons } from "@/components/icons"
 import { MainNav } from "@/components/main-nav"
 import { DocsSearch } from "@/components/search"
-import { CommandMenu } from "@/components/command-menu"
+// import { CommandMenu } from "@/components/command-menu"
 import { DocsSidebarNav } from "@/components/sidebar-nav"
 import { SiteFooter } from "@/components/site-footer"
 
@@ -24,7 +24,7 @@ export default function DocsLayout({ children }: DocsLayoutProps) {
           <div className="flex flex-1 items-center space-x-4 sm:justify-end">
             <div className="flex-1 sm:grow-0">
               {/* <DocsSearch /> */}
-              <CommandMenu />
+              {/* <CommandMenu /> */}
             </div>
             <nav className="flex space-x-4">
               <Link
