@@ -56,6 +56,9 @@ dependencies:
   '@next/mdx':
     specifier: ^14.1.0
     version: 14.2.5(@mdx-js/loader@3.0.1)(@mdx-js/react@3.0.1)
+  '@primer/react':
+    specifier: ^36.26.0
+    version: 36.26.0(@types/react-dom@18.0.6)(@types/react@18.0.15)(react-dom@18.3.1)(react@18.3.1)(styled-components@5.3.11)
   '@prisma/client':
     specifier: ^4.13.0
     version: 4.16.2(prisma@4.16.2)
@@ -10426,6 +10429,7 @@ packages:
 
   /glob@7.1.7:
     resolution: {integrity: sha512-OvD9ENzPLbegENnYP5UUfJIirTg4+XwMWGaQfQTY0JenxNvvIKP3U3/tAQSPIu/lHxXYSZmpXlUHeqAIdKzBLQ==}
+    deprecated: Glob versions prior to v9 are no longer supported
     dependencies:
       fs.realpath: 1.0.0
       inflight: 1.0.6
