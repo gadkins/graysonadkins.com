@@ -29,6 +29,10 @@ export const notebooksConfig: NotebooksConfig = {
           href: "/notebooks/data-processing/call-summarization-pipeline-aws",
         },
         {
+          title: "Sentiment Analysis",
+          href: "/notebooks/data-processing/nlp-sentiment-analysis",
+        },
+        {
           title: "Data Extraction",
           href: "/notebooks/data-processing/data-extraction",
         },
