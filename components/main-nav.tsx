@@ -124,20 +124,6 @@ export function MainNav({ items, children }: MainNavProps) {
               </NavigationMenuLink>
             </Link>
           </NavigationMenuItem> */}
-          <NavigationMenuItem>
-            <Link href="/designs" legacyBehavior passHref>
-              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                Product Design
-              </NavigationMenuLink>
-            </Link>
-          </NavigationMenuItem>
-          <NavigationMenuItem>
-            <Link href="/blog" legacyBehavior passHref>
-              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                Blog
-              </NavigationMenuLink>
-            </Link>
-          </NavigationMenuItem>
           {/* <NavigationMenuItem>
             <Link href="/#resume" legacyBehavior passHref>
               <NavigationMenuLink className={navigationMenuTriggerStyle()}>
