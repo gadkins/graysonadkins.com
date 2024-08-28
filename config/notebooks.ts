@@ -54,6 +54,10 @@ export const notebooksConfig: NotebooksConfig = {
           href: "/notebooks/fine-tuning/function-calling",
         },
         {
+          title: "Text-to-SQL",
+          href: "/notebooks/fine-tuning/text-to-sql",
+        },
+        {
           title: "Multi-Modal (Vision Captioning)",
           href: "/notebooks/fine-tuning/multi-modal-visual-captioning"
         }
